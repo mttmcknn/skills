@@ -74,3 +74,11 @@ Packaging validation checks both native metadata and compatibility synchronizati
 Codex and Claude Code both remain supported. Each bundle ships both manifests and one shared `skills/` directory; the old top-level Claude manifests moved with their bundles into `plugins/`. The README and website now give each host its own installation section. Generating Claude metadata keeps releases synchronized and does not make Codex a runtime dependency.
 
 A packaging regression test checks that the Claude catalog exposes all seven skills at matching versions after removing all Codex metadata from a fixture. Release checks also validate the marketplace and both bundles with `claude plugin validate --strict`. Claude's [plugin reference](https://code.claude.com/docs/en/plugins-reference#skills) documents discovery of the shared `skills/` layout.
+
+## Vercel skills installation
+
+The recommended installation path is now `npx skills add mttmcknn/skills`, using [Vercel's skills CLI](https://github.com/vercel-labs/skills). Users choose individual skills and agent targets through one installer. Existing plugin manifests remain for compatibility; marketplace registration is no longer the primary setup flow.
+
+Verified the published GitHub source with `skills@1.5.26`: discovery returned all seven skills, an actual project install succeeded for both `codex` and `claude-code`, and both agent directories contained byte-identical skill bodies, display metadata, and references. The test used a temporary project rather than global agent directories. No relocation or duplication of the source skills was needed.
+
+CI now repeats discovery, installation, installed-skill listing, and resource checks against the current checkout with `scripts/check_skills_install.py`. The pinned CLI version requires Node.js 22.20 or later. This verifies installation and file discovery, not model behavior when executing the workflows.
