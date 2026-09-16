@@ -4,8 +4,8 @@ lang: en
 timezone: America/Los_Angeles
 
 title: Matt's Skills
-tagline: Claude Code plugin marketplace
-description: Matt McKenna’s agent skills for PR review and focused utilities.
+tagline: Portable agent skills · Codex first
+description: Portable skills for PR review, code images, and project handoffs, with native Codex integration.
 
 url: "https://mttmcknn.github.io"
 baseurl: "/skills"
@@ -93,6 +93,10 @@ exclude:
   - .claude/
   - docs/
   - .claude-plugin/
+  - .agents/
+  - plugins/
+  - tests/
+  - AGENTS.md
   - android/
   - review/
   - utilities/

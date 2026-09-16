@@ -6,4 +6,6 @@ The skills themselves live on the [`main`](https://github.com/mttmcknn/skills/tr
 
 Edit layouts, the Chirpy config, or `bin/build-posts.rb` here. Edit skills and plugin manifests on `main`.
 
-The generator reads the marketplace manifest, publishes only its listed plugins, and rewrites relative skill-resource links to their GitHub source. Retired Android skill URLs redirect to the upstream migration page.
+The generator reads the native `.agents/plugins/marketplace.json` catalog, publishes only its listed plugins, and rewrites relative skill-resource links to their GitHub source. Retired Android skill URLs redirect to the upstream migration page.
+
+Skill sources live in `plugins/<bundle>/skills/`, with portable instructions and separate Codex UI metadata. Claude compatibility packaging is not used to generate the website.

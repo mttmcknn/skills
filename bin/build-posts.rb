@@ -40,14 +40,14 @@ def github_resource_links(body, skill_path, repository)
   end.join
 end
 
-marketplace = JSON.parse(File.read('.claude-plugin/marketplace.json'))
+marketplace = JSON.parse(File.read('.agents/plugins/marketplace.json'))
 config = YAML.safe_load(File.read('_config.yml'))
 repository = "#{config.fetch('github').fetch('username')}/skills"
 FileUtils.rm_rf(POSTS_DIR)
 FileUtils.mkdir_p(POSTS_DIR)
 count = 0
 marketplace.fetch('plugins').each do |plugin|
-  source = plugin.fetch('source')
+  source = plugin.fetch('source').fetch('path')
   Dir.glob(File.join(source, 'skills', '*', 'SKILL.md')).sort.each do |path|
     raw = File.read(path)
     match = raw.match(/\A---\s*\n(.*?)\n---\s*\n/m)
