@@ -52,8 +52,11 @@ def main():
         visible = json.loads(run('list', '--agent', 'codex', 'claude-code', '--json'))
         assert {item['name'] for item in visible} == expected.keys(), 'Installed skills are not listed'
         for item in visible:
-            assert set(item['agents']) == AGENTS.keys(), f"Agent discovery failed for {item['name']}"
+            assert item['scope'] == 'project', item
+            assert Path(item['path']).resolve().is_relative_to(project), item
 
+        # `list` labels only locally detected agent apps. CI has neither app;
+        # verify both target directories directly instead of asserting those labels.
         for name, source in expected.items():
             for agent, destination in AGENTS.items():
                 installed_path = project / destination / name
@@ -64,7 +67,7 @@ def main():
                         assert target.read_bytes() == resource.read_bytes(), f'{agent}: resource differs: {target}'
 
         print(f'skills@{CLI_VERSION}: discovered and installed all {len(expected)} skills for '
-              'Codex and Claude Code; verified complete resources and agent discovery.')
+              'Codex and Claude Code; verified complete resources and installed-skill listing.')
 
 
 if __name__ == '__main__':
