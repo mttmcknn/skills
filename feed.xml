@@ -1,0 +1,143 @@
+
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://mttmcknn.github.io/skills/</id>
+  <title>Matt's Skills</title>
+  <subtitle>Skills for PR review, code images, and project handoffs. Install in Codex, Claude Code, and other agents with the skills CLI.</subtitle>
+  <updated>2026-09-16T12:58:37-07:00</updated>
+  <author>
+    <name>Matt McKenna</name>
+    <uri>https://mttmcknn.github.io/skills/</uri>
+  </author>
+  <link rel="self" type="application/atom+xml" href="https://mttmcknn.github.io/skills/feed.xml"/>
+  <link rel="alternate" type="text/html" hreflang="en"
+    href="https://mttmcknn.github.io/skills/"/>
+  <generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator>
+  <rights> © 2026 Matt McKenna </rights>
+  <icon>/skills/assets/img/favicons/favicon.ico</icon>
+  <logo>/skills/assets/img/favicons/favicon-96x96.png</logo>
+
+
+  
+  <entry>
+    <title>Resume a Task Checkpoint</title>
+    <link href="https://mttmcknn.github.io/skills/utilities/skills/resume/" rel="alternate" type="text/html" title="Resume a Task Checkpoint" />
+    <published>2026-09-16T00:00:00-07:00</published>
+  
+    <updated>2026-09-16T00:00:00-07:00</updated>
+  
+    <id>https://mttmcknn.github.io/skills/utilities/skills/resume/</id>
+    <content type="text/html" src="https://mttmcknn.github.io/skills/utilities/skills/resume/" />
+    <author>
+      <name>Matt McKenna</name>
+    </author>
+
+  
+    
+    <category term="utilities" />
+    
+  
+
+  <summary>Continue work from a saved project checkpoint or handoff when the user requests it. Verifies current files and Git state before following the recorded next step; does not require the original agent host or session.</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>Save a Task Checkpoint</title>
+    <link href="https://mttmcknn.github.io/skills/utilities/skills/checkpoint/" rel="alternate" type="text/html" title="Save a Task Checkpoint" />
+    <published>2026-09-16T00:00:00-07:00</published>
+  
+    <updated>2026-09-16T00:00:00-07:00</updated>
+  
+    <id>https://mttmcknn.github.io/skills/utilities/skills/checkpoint/</id>
+    <content type="text/html" src="https://mttmcknn.github.io/skills/utilities/skills/checkpoint/" />
+    <author>
+      <name>Matt McKenna</name>
+    </author>
+
+  
+    
+    <category term="utilities" />
+    
+  
+
+  <summary>Save a compact project handoff when the user asks to pause, checkpoint, or preserve task context for a later session. Records the goal, decisions, changes, validation, blockers, and next step without requiring a particular agent host.</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>Address Pull Request Feedback</title>
+    <link href="https://mttmcknn.github.io/skills/review/skills/address-review/" rel="alternate" type="text/html" title="Address Pull Request Feedback" />
+    <published>2026-05-20T00:00:00-07:00</published>
+  
+    <updated>2026-05-20T00:00:00-07:00</updated>
+  
+    <id>https://mttmcknn.github.io/skills/review/skills/address-review/</id>
+    <content type="text/html" src="https://mttmcknn.github.io/skills/review/skills/address-review/" />
+    <author>
+      <name>Matt McKenna</name>
+    </author>
+
+  
+    
+    <category term="review" />
+    
+  
+
+  <summary>Address existing pull request review comments from humans or bots: validate feedback, implement justified fixes, and report dispositions. Use for received feedback, not a fresh code review or merge operation.</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>Focused Clarification</title>
+    <link href="https://mttmcknn.github.io/skills/utilities/skills/interrogation/" rel="alternate" type="text/html" title="Focused Clarification" />
+    <published>2026-04-29T00:00:00-07:00</published>
+  
+    <updated>2026-04-29T00:00:00-07:00</updated>
+  
+    <id>https://mttmcknn.github.io/skills/utilities/skills/interrogation/</id>
+    <content type="text/html" src="https://mttmcknn.github.io/skills/utilities/skills/interrogation/" />
+    <author>
+      <name>Matt McKenna</name>
+    </author>
+
+  
+    
+    <category term="utilities" />
+    
+  
+
+  <summary>Clarify an underspecified request through a short, focused interview when the user asks to be questioned or invokes interrogation. Do not activate merely because an ordinary task has minor ambiguity.</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>Render Code as an Image</title>
+    <link href="https://mttmcknn.github.io/skills/utilities/skills/code-as-image/" rel="alternate" type="text/html" title="Render Code as an Image" />
+    <published>2026-04-28T00:00:00-07:00</published>
+  
+    <updated>2026-04-28T00:00:00-07:00</updated>
+  
+    <id>https://mttmcknn.github.io/skills/utilities/skills/code-as-image/</id>
+    <content type="text/html" src="https://mttmcknn.github.io/skills/utilities/skills/code-as-image/" />
+    <author>
+      <name>Matt McKenna</name>
+    </author>
+
+  
+    
+    <category term="utilities" />
+    
+  
+
+  <summary>Render a supplied code snippet as a syntax-highlighted image for sharing or presentation. Produce an actual image when requested; return a renderer link alone only when that is the requested output or rendering is unavailable.</summary>
+
+  </entry>
+
+</feed>
+
+
