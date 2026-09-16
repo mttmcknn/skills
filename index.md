@@ -6,27 +6,27 @@ order: 0
 permalink: /
 ---
 
-The `himattm` Claude Code plugin marketplace — Matt Mckenna's personal skill bundles for Android/Compose development, pull request review workflows, and handy utilities.
+The `mttmcknn` Claude Code plugin marketplace — Matt McKenna's personal skill bundles for pull request review workflows and focused utilities.
 
 ## Plugins
 
-- **[android](./categories/android/)** — Android/Compose development: project scaffolding, the `android` CLI, and screenshot/UI verification.
-- **[review](./categories/review/)** — Pull request review workflows: addressing Gemini feedback, iterative review cycles, and batch PR validation.
-- **[utilities](./categories/utilities/)** — Utility skills: render code snippets as shareable images (code-as-image).
+- **[review](./categories/review/)** — Pull request review workflows: addressing human and bot feedback, iterative review cycles, and batch PR validation.
+- **[utilities](./categories/utilities/)** — Code snippet images, focused clarification, and checkpoint/resume commands.
 
 ## Install
 
 In Claude Code:
 
 ```bash
-/plugin marketplace add https://github.com/himattm/skills
-/plugin install android@himattm
-/plugin install review@himattm
-/plugin install utilities@himattm
+/plugin marketplace add https://github.com/mttmcknn/skills
+/plugin install review@mttmcknn
+/plugin install utilities@mttmcknn
 ```
 
-The marketplace manifest is refreshed at startup, so version bumps to either plugin auto-deploy on the next Claude Code launch — no manual `/plugin update` needed.
+Update settings are controlled by your client. If migrating from the former marketplace name, remove the old plugin/marketplace entries before installing these names to avoid duplicate skills.
+
+Android workflows now live entirely in [Google’s Android skills](https://github.com/android/skills). The local Android plugin has been retired; uninstall the old plugin and keep your upstream CLI skills.
 
 ## Source
 
-Repo: <https://github.com/himattm/skills>
+Repo: <https://github.com/mttmcknn/skills>

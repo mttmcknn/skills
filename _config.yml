@@ -5,21 +5,21 @@ timezone: America/Los_Angeles
 
 title: Matt's Skills
 tagline: Claude Code plugin marketplace
-description: Matt Mckenna's personal skill bundles for Android/Compose development and pull request review workflows.
+description: Matt McKenna’s agent skills for PR review and focused utilities.
 
-url: "https://himattm.github.io"
+url: "https://mttmcknn.github.io"
 baseurl: "/skills"
 
 github:
-  username: himattm
+  username: mttmcknn
 
 # Sidebar profile
-avatar: "https://github.com/himattm.png"
+avatar: "https://github.com/mttmcknn.png"
 
 social:
-  name: Matt Mckenna
+  name: Matt McKenna
   links:
-    - https://github.com/himattm
+    - https://github.com/mttmcknn
     - https://bsky.app/profile/mmckenna.me
     - https://androiddev.social/@mattm
     - https://www.threads.net/@himattm
@@ -93,16 +93,9 @@ exclude:
   - .claude/
   - docs/
   - .claude-plugin/
-  - "plugins/*/.claude-plugin/"
-  - "plugins/*/skills/**/*.tmpl"
-  - "plugins/*/skills/**/*.kts"
-  - "plugins/*/skills/**/build-logic"
-  - "plugins/*/skills/**/google-services.json.example"
-  - "plugins/*/skills/**/ci.yml"
-  - "plugins/*/skills/**/detekt.yml"
-  - "plugins/*/skills/**/editorconfig"
-  - "plugins/*/skills/**/gitignore"
-  - "plugins/*/skills/**/libs.versions.toml"
-  # Don't process the source SKILL.md files directly — only the transformed _posts.
-  - "plugins/*/skills/*/SKILL.md"
-  - "plugins/*/skills/*/references/"
+  - android/
+  - review/
+  - utilities/
+  - maintenance/
+  - scripts/
+  - requirements-dev.txt

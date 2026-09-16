@@ -1,78 +1,74 @@
 #!/usr/bin/env ruby
-# Build _posts/ from <plugin>/skills/<skill>/SKILL.md sources.
-#
-# The build workflow runs from a checkout of `main` (which has the three
-# top-level plugin dirs `android/`, `review/`, `utilities/`) with this
-# branch's Jekyll source overlaid on top. SKILL.md files are discovered
-# from those plugin dirs.
-#
-# Each SKILL.md becomes a Chirpy post with:
-#   - title: derived from the first markdown H1 in the body, ignoring lines
-#     inside fenced code blocks (so `# Wrong — ...` shell comments don't win).
-#     Falls back to the directory slug if no H1 is found.
-#   - date:  the date of the first git commit that introduced the file (with
-#     --follow so renames don't reset history). Falls back to today.
-#   - permalink: /<plugin>/skills/<skill>/ — mirrors source structure.
-#   - categories: [<plugin>] — drives Chirpy's auto-archive pages.
-#
-# The transformed _posts/ directory is .gitignored so it only exists at build
-# time. Run from repo root before `jekyll build`.
-
+# Run after overlaying this branch's Jekyll source onto the marketplace checkout.
+# Only manifest-listed plugins are published. Support files remain on GitHub.
 require 'fileutils'
+require 'json'
 require 'open3'
+require 'pathname'
+require 'yaml'
 
 POSTS_DIR = '_posts'
-SKILLS_GLOB = '{android,review,utilities}/skills/*/SKILL.md'
-
-def first_h1_outside_code(body)
-  clean = body.gsub(/```[\s\S]*?```/, '')
-  m = clean.match(/^# (.+)$/)
-  m ? m[1].strip : nil
-end
 
 def first_commit_date(path)
-  # --follow tracks the file across renames. We can't combine it with --reverse
-  # (a known git quirk where --reverse runs before --follow's rename filter),
-  # so take the last line of default-order (newest-first) output.
   out, status = Open3.capture2('git', 'log', '--follow', '--format=%cI', '--', path)
   return nil unless status.success?
-  iso = out.strip.split("\n").last
-  iso&.split('T')&.first
+  out.strip.split("\n").last&.split('T')&.first
 end
 
+def github_resource_links(body, skill_path, repository)
+  fenced = false
+  body.lines.map do |line|
+    if line.match?(/^\s*```/)
+      fenced = !fenced
+      next line
+    end
+    next line if fenced
+    line.gsub(/(\[[^\]]*\]\()([^\s)]+)(\))/) do
+      prefix, target, suffix = Regexp.last_match.captures
+      if target.match?(%r{\A(?:[a-zA-Z][a-zA-Z0-9+.-]*:|/|#)})
+        "#{prefix}#{target}#{suffix}"
+      else
+        path, fragment = target.split('#', 2)
+        resolved = Pathname.new(File.join(File.dirname(skill_path), path)).cleanpath.to_s
+        raise "Missing resource: #{resolved}" unless File.exist?(resolved)
+        raise "Resource escapes repository: #{resolved}" if resolved.start_with?('../')
+        kind = File.directory?(resolved) ? 'tree' : 'blob'
+        anchor = fragment ? "##{fragment}" : ''
+        "#{prefix}https://github.com/#{repository}/#{kind}/main/#{resolved}#{anchor}#{suffix}"
+      end
+    end
+  end.join
+end
+
+marketplace = JSON.parse(File.read('.claude-plugin/marketplace.json'))
+config = YAML.safe_load(File.read('_config.yml'))
+repository = "#{config.fetch('github').fetch('username')}/skills"
 FileUtils.rm_rf(POSTS_DIR)
 FileUtils.mkdir_p(POSTS_DIR)
-
 count = 0
-Dir.glob(SKILLS_GLOB).sort.each do |path|
-  parts = path.split('/')
-  plugin = parts[0]
-  skill = parts[2]
-
-  raw = File.read(path)
-  body = raw.sub(/\A---\s*\n.*?\n---\s*\n/m, '').sub(/\A\s*/, '')
-
-  title = first_h1_outside_code(body) || skill
-  date = first_commit_date(path) || Time.now.strftime('%Y-%m-%d')
-
-  filename = "#{date}-#{plugin}-#{skill}.md"
-
-  frontmatter = <<~YAML
-    ---
-    layout: post
-    title: "#{title.gsub('"', '\\"')}"
-    date: #{date}
-    categories: [#{plugin}]
-    tags: [#{plugin}, skill]
-    permalink: /#{plugin}/skills/#{skill}/
-    toc: true
-    pin: false
-    ---
-
-  YAML
-
-  File.write(File.join(POSTS_DIR, filename), frontmatter + body)
-  count += 1
+marketplace.fetch('plugins').each do |plugin|
+  source = plugin.fetch('source')
+  Dir.glob(File.join(source, 'skills', '*', 'SKILL.md')).sort.each do |path|
+    raw = File.read(path)
+    match = raw.match(/\A---\s*\n(.*?)\n---\s*\n/m)
+    raise "Missing skill metadata: #{path}" unless match
+    metadata = YAML.safe_load(match[1])
+    body = raw[match.end(0)..-1].lstrip
+    clean = body.gsub(/```[\s\S]*?```/, '')
+    title = clean[/^# (.+)$/, 1] || metadata.fetch('name')
+    date = first_commit_date(path) || Time.now.strftime('%Y-%m-%d')
+    slug = metadata.fetch('name')
+    name = plugin.fetch('name')
+    frontmatter = {
+      'layout' => 'post', 'title' => title.strip,
+      'description' => metadata.fetch('description'), 'date' => date,
+      'categories' => [name], 'tags' => [name, 'skill'],
+      'permalink' => "/#{name}/skills/#{slug}/", 'toc' => true, 'pin' => false
+    }
+    body = github_resource_links(body, path, repository)
+    File.write(File.join(POSTS_DIR, "#{date}-#{name}-#{slug}.md"),
+               frontmatter.to_yaml + "---\n\n" + body)
+    count += 1
+  end
 end
-
 puts "Generated #{count} posts in #{POSTS_DIR}/"
