@@ -1,0 +1,4 @@
+interface:
+  display_name: "Validate a PR Queue"
+  short_description: "Check PR readiness and dependency-aware merge order."
+  default_prompt: "Use $validate-merge-prs to validate these pull requests and propose a merge order."

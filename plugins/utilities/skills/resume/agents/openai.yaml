@@ -1,0 +1,4 @@
+interface:
+  display_name: "Resume a Checkpoint"
+  short_description: "Continue a saved handoff after checking current state."
+  default_prompt: "Use $resume to continue from the latest checkpoint in this project."

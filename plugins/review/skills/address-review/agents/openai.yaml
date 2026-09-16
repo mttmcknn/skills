@@ -1,0 +1,4 @@
+interface:
+  display_name: "Address PR Feedback"
+  short_description: "Triage and fix pull request review feedback."
+  default_prompt: "Use $address-review to address the feedback on this pull request."

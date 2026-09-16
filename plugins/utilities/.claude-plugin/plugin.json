@@ -1,0 +1,11 @@
+{
+  "name": "utilities",
+  "version": "0.6.0",
+  "description": "Code images, focused questions, and portable handoffs.",
+  "author": {
+    "name": "Matt McKenna",
+    "url": "https://github.com/mttmcknn"
+  },
+  "homepage": "https://mttmcknn.github.io/skills/",
+  "repository": "https://github.com/mttmcknn/skills"
+}

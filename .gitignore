@@ -12,6 +12,8 @@ Thumbs.db
 # Local agent/editor state
 .claude/
 .codex/
+.agents/checkpoints/
+__pycache__/
 
 # Docs
 docs/

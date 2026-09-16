@@ -1,0 +1,11 @@
+{
+  "name": "review",
+  "version": "0.4.0",
+  "description": "Review feedback, fix issues, and validate PR queues.",
+  "author": {
+    "name": "Matt McKenna",
+    "url": "https://github.com/mttmcknn"
+  },
+  "homepage": "https://mttmcknn.github.io/skills/",
+  "repository": "https://github.com/mttmcknn/skills"
+}

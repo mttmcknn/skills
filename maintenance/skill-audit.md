@@ -60,3 +60,11 @@ These are manual review scenarios, not a measured model-routing benchmark.
 - [Claude Code marketplace management](https://code.claude.com/docs/en/discover-plugins): update behavior depends on marketplace settings, not a universal startup guarantee.
 
 Validation covers packaged skill metadata/resources, the website generator, GitHub identity references, and representative scope decisions. It is not an Android app/device test or an empirical latency/quality benchmark. Removed skills are preserved in Git history, not in a second active skill directory.
+
+## Portable / Codex-first follow-up
+
+Moved bundles to `plugins/`, added the native `.agents/plugins/marketplace.json` catalog and `.codex-plugin/plugin.json` manifests, and supplied Codex display names/default prompts separately in each skill’s `agents/openai.yaml`. The website and validation read the native catalog. Claude metadata is generated from it and has no separate workflow bodies.
+
+Converted checkpoint/resume commands into two standard skills, bringing the remaining collection to seven skills. Handoffs default to `.agents/checkpoints/`, accept explicit legacy paths, and require no host-specific file tool, clear-chat command, or conversation state. Installation documentation prioritizes Codex and includes individual skill-folder use in other compatible hosts.
+
+Packaging validation checks both native metadata and compatibility synchronization. Fixture tests exercise missing resources, duplicate names, bad metadata, escaped plugin paths, and synchronization behavior. These checks do not measure live model routing or claim every agent host was exercised.

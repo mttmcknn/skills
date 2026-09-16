@@ -1,9 +1,0 @@
-{
-  "name": "review",
-  "version": "0.3.0",
-  "description": "Pull request feedback, scoped review-and-fix cycles, and dependency-aware PR validation and merging.",
-  "author": {
-    "name": "Matt McKenna"
-  },
-  "homepage": "https://github.com/mttmcknn/skills"
-}

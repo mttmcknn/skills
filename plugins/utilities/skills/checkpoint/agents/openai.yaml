@@ -1,0 +1,4 @@
+interface:
+  display_name: "Save a Checkpoint"
+  short_description: "Save task context for another session or agent."
+  default_prompt: "Use $checkpoint to save a handoff for this task."

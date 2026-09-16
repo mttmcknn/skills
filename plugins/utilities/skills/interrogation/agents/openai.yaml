@@ -1,0 +1,4 @@
+interface:
+  display_name: "Clarify a Request"
+  short_description: "Ask focused questions before starting the work."
+  default_prompt: "Use $interrogation to clarify this idea before we begin."

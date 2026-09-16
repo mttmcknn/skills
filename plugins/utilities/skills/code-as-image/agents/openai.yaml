@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code as an Image"
+  short_description: "Render a code snippet as a shareable image."
+  default_prompt: "Use $code-as-image to render this code snippet as a PNG."

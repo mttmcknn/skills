@@ -1,30 +1,30 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "mttmcknn",
-  "description": "Matt McKenna's agent skills for PR review and focused utilities.",
+  "description": "Optional Claude Code packaging for the same portable agent skills.",
   "owner": {
     "name": "Matt McKenna"
   },
   "plugins": [
     {
       "name": "review",
-      "description": "Pull request feedback, scoped review-and-fix cycles, and dependency-aware PR validation and merging.",
+      "source": "./plugins/review",
+      "description": "Review feedback, fix issues, and validate PR queues.",
       "author": {
-        "name": "Matt McKenna"
+        "name": "Matt McKenna",
+        "url": "https://github.com/mttmcknn"
       },
-      "category": "development",
-      "source": "./review",
-      "homepage": "https://github.com/mttmcknn/skills"
+      "homepage": "https://mttmcknn.github.io/skills/"
     },
     {
       "name": "utilities",
-      "description": "Code snippet images, focused clarification, and checkpoint/resume commands.",
+      "source": "./plugins/utilities",
+      "description": "Code images, focused questions, and portable handoffs.",
       "author": {
-        "name": "Matt McKenna"
+        "name": "Matt McKenna",
+        "url": "https://github.com/mttmcknn"
       },
-      "category": "utilities",
-      "source": "./utilities",
-      "homepage": "https://github.com/mttmcknn/skills"
+      "homepage": "https://mttmcknn.github.io/skills/"
     }
   ]
 }

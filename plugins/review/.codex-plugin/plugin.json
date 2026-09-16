@@ -1,0 +1,26 @@
+{
+  "name": "review",
+  "version": "0.4.0",
+  "description": "Review feedback, fix issues, and validate PR queues.",
+  "author": {
+    "name": "Matt McKenna",
+    "url": "https://github.com/mttmcknn"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "PR Review",
+    "shortDescription": "Review feedback, fix issues, and validate PR queues.",
+    "longDescription": "Portable skills for pull request feedback, review-and-fix cycles, and dependency-aware merge validation.",
+    "developerName": "Matt McKenna",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": [
+      "Address the review comments on this PR.",
+      "Review and fix this pull request.",
+      "Validate this PR queue and propose a merge order."
+    ],
+    "websiteURL": "https://mttmcknn.github.io/skills/"
+  },
+  "homepage": "https://mttmcknn.github.io/skills/",
+  "repository": "https://github.com/mttmcknn/skills"
+}

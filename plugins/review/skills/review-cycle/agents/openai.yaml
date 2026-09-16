@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review and Fix a PR"
+  short_description: "Find and fix actionable pull request issues."
+  default_prompt: "Use $review-cycle to review and fix this pull request."
