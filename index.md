@@ -6,7 +6,7 @@ order: 0
 permalink: /
 ---
 
-Portable agent skills for PR review and focused utilities, with Codex as the primary integration. The same `SKILL.md` workflows work in other compatible agents.
+Portable agent skills for PR review and focused utilities, packaged for both Codex and Claude Code. Both hosts get the same seven skills through their own plugin marketplace support.
 
 ## Install in Codex
 
@@ -24,6 +24,16 @@ Use $checkpoint to save a handoff for this task.
 Use $resume to continue from the latest checkpoint in this project.
 ```
 
+## Install in Claude Code
+
+```text
+/plugin marketplace add https://github.com/mttmcknn/skills
+/plugin install review@mttmcknn
+/plugin install utilities@mttmcknn
+```
+
+Use Claude Code's skill picker to invoke any of the seven skills, including checkpoint/resume. Both bundles ship Claude manifests and the shared skill files; Codex does not need to be installed.
+
 ## Bundles
 
 - **[review](./categories/review/)** — Review feedback, iterative review and fixes, and dependency-aware PR validation.
@@ -32,14 +42,6 @@ Use $resume to continue from the latest checkpoint in this project.
 ## Other agents
 
 Install individual skill folders from `plugins/<bundle>/skills/` into your agent’s supported discovery directory. Keep each folder’s references with it. The workflows do not require a particular model or host-specific tools.
-
-Claude Code compatibility uses the same instructions:
-
-```text
-/plugin marketplace add https://github.com/mttmcknn/skills
-/plugin install review@mttmcknn
-/plugin install utilities@mttmcknn
-```
 
 Avoid loading both a plugin and a local copy of the same skill. Update settings belong to your client. PR workflows require an available GitHub connector or authenticated `gh` CLI.
 
