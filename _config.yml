@@ -4,8 +4,8 @@ lang: en
 timezone: America/Los_Angeles
 
 title: Matt's Skills
-tagline: Skills for Codex & Claude Code
-description: Portable skills for PR review, code images, and project handoffs, packaged for Codex and Claude Code.
+tagline: Portable agent skills
+description: Skills for PR review, code images, and project handoffs. Install in Codex, Claude Code, and other agents with the skills CLI.
 
 url: "https://mttmcknn.github.io"
 baseurl: "/skills"
