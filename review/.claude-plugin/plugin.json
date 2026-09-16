@@ -1,9 +1,9 @@
 {
   "name": "review",
-  "version": "0.2.0",
-  "description": "Pull request review workflows: addressing review comments (human or bot), iterative review cycles, and batch PR validation/merging.",
+  "version": "0.3.0",
+  "description": "Pull request feedback, scoped review-and-fix cycles, and dependency-aware PR validation and merging.",
   "author": {
-    "name": "Matt Mckenna"
+    "name": "Matt McKenna"
   },
-  "homepage": "https://github.com/himattm/skills"
+  "homepage": "https://github.com/mttmcknn/skills"
 }

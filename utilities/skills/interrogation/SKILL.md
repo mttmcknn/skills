@@ -1,36 +1,15 @@
 ---
 name: interrogation
-description: Use when the user invokes `/interrogation "<prompt>"`. Ask focused clarifying questions via AskUserQuestion until you have enough certainty to act on the prompt without guessing. Stop early — three rounds at most.
+description: "Clarify an underspecified request through a short, focused interview when the user asks to be questioned or invokes interrogation. Do not activate merely because an ordinary task has minor ambiguity."
 ---
 
-# Interrogation
+# Focused Clarification
 
-The user gave you a prompt that's likely under-specified. Drill in with structured questions before doing the work, so the output lands on the first try instead of needing a redo.
+Read the request and available context first. Identify only unknowns whose answers would materially change the deliverable, scope, or constraints.
 
-## Workflow
+- Ask a small batch of related questions using the available user-input tool, or plain text if none exists. Offer concise choices when useful and allow free text. Do not depend on a host-specific tool name.
+- Incorporate each answer and briefly state the resulting scope. Do not re-ask facts available in files or prior messages.
+- Stop as soon as enough is known to act, when the user says to proceed, or after three rounds. State reasonable remaining assumptions and begin the requested work; no ritual final confirmation.
+- If an essential input remains missing, name it clearly and continue independent work where possible. Optional preferences must not become blockers.
 
-1. **Read the prompt carefully.** Identify the 2–4 ambiguities that, if guessed wrong, would lead to materially different output. These are the only things worth asking about.
-2. **Ask via `AskUserQuestion`.** Batch related questions into one call — never one question per turn. Use multiple-choice when the answer space is bounded; use a free-form option for open ends.
-3. **Outline your understanding after every answer.** Don't silently decide "I have enough." Write a short, high-level outline of what you now think the user wants — scope, output shape, key choices — so the user can see your mental model and correct it before more time is invested. Bullet points are fine. Keep it to ~5 lines.
-4. **Iterate at most twice more.** If the outline reveals a remaining ambiguity, ask another batched round. If the user confirms the outline (or says "go" / "ship it"), stop. Three rounds maximum.
-5. **Final confirm and proceed.** Once the outline matches, restate the agreed plan in one paragraph and begin the work.
-
-## What to ask about
-
-- **Scope** — what's in, what's out
-- **Output shape** — file? PR? branch? message? what does "done" look like?
-- **Hard constraints** — must use X, can't touch Y, deadline, audience
-- **Judgement calls the user has a view on** — speed vs. polish, convention vs. novelty
-
-## What NOT to ask
-
-- Anything answerable from the codebase, recent context, or `CLAUDE.md`
-- Stylistic micro-decisions — pick the codebase convention silently
-- Things the user already answered earlier in the session
-- Yes/no when a multiple-choice would be more decisive
-
-## Stop conditions
-
-- The user confirms your outline (mental models match)
-- The user says "go", "ship it", "you have enough", or equivalent
-- Three rounds in, further questions would scope-creep rather than clarify
+Do not turn the interview into authorization for unrelated actions, external messages, or a broader project.

@@ -1,262 +1,30 @@
 ---
 name: validate-merge-prs
-description: Use when you have multiple open PRs and want to validate them all (CI, reviews, code quality) and plan a safe merge order. Also use when you need to batch-process agent-created PRs for merging.
+description: "Validate a requested set of pull requests and determine dependency-aware merge order; execute merges only within the user-authorized scope. Use for a PR queue or stacked PRs, not a single code review."
 ---
 
-Orchestrates the full PR-merge lifecycle for all open PRs in the current repo. Discovers PRs, builds a dependency graph, validates each in parallel via review-cycle, computes a safe merge order, and presents a merge plan for approval before executing.
+# Validate and Merge a PR Queue
 
-## Workflow
+## Inspect the requested queue
 
-```dot
-digraph validate_merge {
-    rankdir=TB;
-    discover [label="Discover open PRs\n(gh pr list)" shape=box];
-    graph [label="Build dependency graph\n(branches + files + metadata)" shape=box];
-    validate [label="Parallel validation\n(sub-agent per PR\nrunning review-cycle)" shape=box];
-    classify [label="Classify: ready vs blocked" shape=diamond];
-    order [label="Compute merge order\n(topo sort + overlap tie-break)" shape=box];
-    report [label="Present report\n+ merge plan" shape=box];
-    approve [label="User approves?" shape=diamond];
-    merge [label="Sequential merge\n(rebase between steps)" shape=box];
-    done [label="Done — report results" shape=doublecircle];
-    blocked [label="Report blockers only" shape=doublecircle];
+Resolve the repository and user-specified PRs or filter. For a request covering all open PRs, list all authors, not just `@me`. Fetch drafts, base/head repositories and refs, head OIDs, reviews, required checks, merge state, and dependency metadata.
 
-    discover -> graph;
-    graph -> validate;
-    validate -> classify;
-    classify -> order [label="some ready"];
-    classify -> blocked [label="all blocked"];
-    order -> report;
-    report -> approve;
-    approve -> merge [label="yes"];
-    approve -> done [label="no / adjust"];
-    merge -> done;
-}
-```
+Build prerequisite → dependent edges from actual stacked-branch topology and explicit dependencies. `A depends on B` means B → A; `A blocks B` means A → B. File overlap is a coordination signal, not a dependency. Flag cycles, unavailable prerequisites, and ambiguous relationships.
 
-## Phase 1: Discovery & Dependency Analysis
+## Validate
 
-### 1. Discover Open PRs
+Review relevant changes and repository requirements. Use `review-cycle` only if fixes are requested; queue validation alone must not rewrite or push PRs. Parallel local validation requires a separate worktree per PR. Remote read-only checks can run concurrently without branch checkout.
 
-```bash
-gh pr list --author @me --state open --json number,title,headRefName,baseRefName,url,reviewDecision,statusCheckRollup,mergeable,body,isDraft,createdAt
-```
+Classify readiness against the current head OID and current base: required checks complete and successful, required approvals satisfied, non-draft, no unresolved merge conflict, no known actionable blocker, and prerequisites ready/merged. Pending, unknown, or unavailable evidence is not a pass. Check repository rules and merge-queue requirements rather than inferring them from a single approval or empty check list.
 
-If zero PRs are found, report "No open PRs found" and stop.
+Topologically order eligible PRs, keeping blocked dependencies out. Use overlap and age only as tie-breakers. Choose the user-requested merge method or repository convention among allowed methods; a lack of merge commits cannot distinguish squash from rebase.
 
-Print a summary table of discovered PRs before continuing:
+## Execute within authorization
 
-```
-| # | Title | Branch | Base | CI | Reviews | Draft |
-```
+Present the concrete order, method, and blockers. If the user already authorized merging the eligible set, proceed without asking again. If they requested validation or a plan only, finish that work and request approval for the concrete merges before performing them.
 
-### 2. Build Dependency Graph
+Immediately before each merge, refresh the head OID, base, checks, reviews, and mergeability. Merge the reviewed head using a commit match guard (for example `gh pr merge NUMBER --squash --match-head-commit SHA`) or the equivalent connector guard. Respect the merge queue and branch protection; do not use an admin bypass. Confirm merge completion rather than treating an auto-merge request as already merged.
 
-Construct a directed "must merge before" graph from three signal sources:
+After a prerequisite merges, inspect each dependent PR again. Retargeting changes a base reference; it does not rebase commits. Squash/rebase merges can leave parent commits in descendants. Inspect the new diff, update/rebase only within authorization, and wait for validation against the resulting head/base. Do not assume retargeting automatically ran CI. Keep branches needed by downstream PRs; delete branches only when requested or established policy requires it.
 
-**Branch topology (hard dependency):** If PR-A's `headRefName` equals PR-B's `baseRefName`, A must merge before B.
-
-**PR metadata (hard dependency):** Scan each PR's body and title for patterns: `depends on #N`, `after #N`, `blocks #N`, `requires #N`. These create directed edges.
-
-**File overlap (soft signal):** For each PR pair, compare changed files:
-
-```bash
-gh pr diff <number> --name-only
-```
-
-Compute pairwise file intersections. Overlapping files don't create hard dependencies — they inform merge ordering as a tie-breaker.
-
-### 3. Cycle Detection
-
-Check the dependency graph for cycles. If found:
-- Flag all PRs in the cycle as errored
-- Exclude them from the merge plan
-- Report the cycle: "Dependency cycle detected: #A → #B → #C → #A"
-
-## Phase 2: Parallel Validation
-
-Dispatch one sub-agent per PR to validate it. All PRs validate concurrently — validation happens on each PR's own branch and doesn't require merge order.
-
-### 4. Dispatch Validation Agents
-
-For each PR, spawn a sub-agent (via Agent tool) with this prompt template:
-
-```
-You are validating PR #<number> (<title>) on branch <headRefName>.
-
-1. Check out the branch: git checkout <headRefName>
-2. Run /review-cycle <number>
-3. After review-cycle completes, check current status:
-   - gh pr view <number> --json statusCheckRollup,reviewDecision,mergeable
-4. Report back with:
-   - PASS or FAIL
-   - What review-cycle fixed (if anything)
-   - What remains broken (if anything)
-   - Current CI status (passing/failing/pending)
-   - Current review status (approved/changes_requested/review_required/none)
-   - Mergeable state (mergeable/conflicting/unknown)
-```
-
-**Parallelism:** Launch all validation agents simultaneously using multiple Agent tool calls in a single message. Use `run_in_background: true` for each agent.
-
-**Wait for all agents to complete** before proceeding to Phase 3.
-
-### 5. Classify Results
-
-After all validation agents report back, classify each PR:
-
-**Ready to merge:**
-- CI passing (all required status checks green)
-- At least one approving review (or reviews not required per repo settings)
-- No merge conflicts with base branch
-- review-cycle completed without unresolved issues
-
-**Blocked (with reason):**
-- CI failing after review-cycle exhausted its iterations → `"CI failing: <failure summary>"`
-- Missing required review approvals → `"Missing required review approval"`
-- Merge conflicts → `"Merge conflict with base branch"`
-- Draft PR → `"PR is in draft status"`
-- Depends on a blocked PR → `"Blocked by #<number> which is also blocked"`
-
-## Phase 3: Merge Plan & Report
-
-### 6. Compute Merge Order
-
-For all "ready" PRs, compute the merge order:
-
-1. **Topological sort** on the dependency graph — hard dependencies determine base ordering
-2. **File overlap tie-break** — among PRs at the same topological level, merge those that share files with later PRs first (so later PRs can rebase cleanly)
-3. **Final tie-break** — oldest PR first (by `createdAt`)
-
-### 7. Detect Merge Method
-
-Auto-detect the repo's merge convention:
-
-```bash
-git log --merges --oneline -20 <default-branch>
-```
-
-- If most recent merges show "Squash" pattern → use `--squash`
-- If most recent merges show standard merge commits → use `--merge`
-- If no merge commits found (linear history) → use `--rebase`
-- If unable to determine → ask the user
-
-### 8. Present Report — HARD GATE
-
-Present the full report in this format:
-
-```
-## PR Queue Status
-
-### Ready to Merge (in order)
-1. #<number> - <title> (base: <baseRefName>) — CI: <status>, Reviews: <count> approved
-   ↳ depends on #<dep>, will rebase after merge  [only if applicable]
-
-### Blocked (needs attention)
-- #<number> - <title> — <block reason>
-
-### Merge Order Rationale
-- #X before #Y: <reason>
-
-### Merge Method
-Detected: <squash|merge|rebase> (based on repo history)
-```
-
-**ASK THE USER:** "This is the proposed merge plan. Approve to proceed, or tell me what to adjust."
-
-**DO NOT merge anything until the user explicitly approves.** This gate is non-negotiable.
-
-## Phase 4: Merge Execution
-
-Triggered only after the user approves the merge plan.
-
-### 9. Sequential Merge
-
-For each PR in the computed merge order:
-
-**a. Pre-merge re-check:**
-
-```bash
-gh pr view <number> --json statusCheckRollup,reviewDecision,mergeable
-```
-
-Verify CI is still passing, reviews are still approved, and PR is still mergeable. If any check fails, skip this PR and report why — do not merge stale PRs.
-
-**b. Merge:**
-
-```bash
-gh pr merge <number> --<method> --delete-branch
-```
-
-Where `<method>` is the detected merge method from step 7.
-
-**c. Rebase downstream PRs:**
-
-If any queued PR had its `baseRefName` pointing at the just-merged branch:
-
-```bash
-gh pr edit <downstream-number> --base <default-branch>
-```
-
-The downstream PR's CI will re-run automatically after the base change.
-
-**d. Continue** to the next PR in the merge order.
-
-### 10. Failure Handling
-
-If a merge fails:
-- **Stop the affected dependency chain** — do not merge any PR that depends on the failed one
-- **Continue with independent PRs** — PRs with no dependency on the failed one can still merge
-- After all possible merges are attempted, present a final status report
-
-### 11. Final Report
-
-After all merges complete (or fail), present:
-
-```
-## Merge Results
-
-### Successfully Merged
-- #<number> - <title> ✓
-
-### Failed
-- #<number> - <title> — <failure reason>
-
-### Skipped (dependency on failed PR)
-- #<number> - <title> — blocked by #<failed-number>
-
-### Still Blocked (from Phase 2)
-- #<number> - <title> — <original block reason>
-```
-
-## Key Design Decisions
-
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| Single invocation | One skill does discovery through merge | User wants full automation, not multi-step manual process |
-| Parallel validation | Sub-agent per PR via Agent tool | PRs validate independently on their own branches |
-| Topo sort + overlap | Dependency-aware merge ordering | Handles stacked branches and minimizes rebase conflicts |
-| Merge method auto-detect | Inspect recent git history | Consistent with existing project conventions |
-| Batch blocker reporting | One report at the end | User wants a coherent picture, not interruptions |
-| Approval gate before merge | Present plan, wait for explicit approval | Autonomous validation but human-approved merging |
-
-## Safety Rails
-
-- **Never force-push.** If a rebase is needed, use `gh pr edit --base` to retarget the PR. Let CI re-run naturally.
-- **Re-check before every merge.** CI and review status can change between validation and merge. Always verify immediately before merging.
-- **Stop the chain on failure.** If PR #42 fails to merge, do not merge #45 that depends on it. Independent PRs can still proceed.
-- **Skip draft PRs.** Flag them as blocked — they are not ready for merge.
-- **Delete branches after merge.** Use `--delete-branch` to clean up merged branches consistently.
-- **Detect cycles.** If the dependency graph has a cycle, exclude those PRs and report the cycle rather than entering an infinite loop.
-
-## Common Mistakes
-
-| Mistake | Fix |
-|---------|-----|
-| Merging without user approval | The hard gate at step 8 is non-negotiable — always wait for explicit approval |
-| Merging in wrong order | Always follow the computed topological sort — never skip ahead |
-| Force-pushing during rebase | Use `gh pr edit --base` to retarget, never force-push |
-| Ignoring draft PRs | Draft PRs must be flagged as blocked, not validated and merged |
-| Trusting stale CI results | Always re-check `statusCheckRollup` and `reviewDecision` immediately before merging |
-| Continuing a dependency chain after failure | If a parent PR fails, all downstream PRs in that chain must be skipped |
-| Merging PRs that are in a cycle | Exclude cyclic PRs and report the cycle to the user |
+Stop an affected dependency chain on failure and continue independent authorized merges. Report merged, queued, blocked, and skipped PRs with links and reasons.

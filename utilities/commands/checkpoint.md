@@ -1,5 +1,5 @@
 ---
-description: Save a self-contained handoff doc for the current session before stepping away. Writes to .claude/checkpoints/ in the current repo and prints it in chat. Resume later with /clear then /resume.
+description: Save a self-contained handoff doc for the current session before stepping away. Writes to .claude/checkpoints/ in the current repo and links it in chat. Resume later with /clear then /resume.
 ---
 
 The user is about to step away. Capture the state of this conversation as a checkpoint file so they (or a future session) can resume without re-exploring everything.
@@ -56,11 +56,13 @@ The triple-backtick `text` block above is part of the checkpoint file you'll wri
 1. **Compute the path.** Working directory is the repo root (or wherever the user invoked from). Path = `.claude/checkpoints/<UTC-timestamp>-<slug>.md` where timestamp is `YYYYMMDDTHHMMSSZ` (compact, sortable). `mkdir -p .claude/checkpoints/` first.
 2. **Introspect the conversation.** Pull from your conversation memory — what was the user's goal, what tool calls happened, what files were edited, what was decided, what's the immediate next step? Be honest about blockers.
 3. **Write the file** with the Write tool. Compute the absolute path (via `pwd` joined with the relative path) and embed it in the resume paste-block at the bottom — the paste-block must be self-contained.
-4. **Print to chat:** the absolute file path, then the full body of the file inline, then this exact line: `Saved. Type /clear, then /resume in the fresh session — or paste the block above.`
+4. **Print to chat:** a link to the absolute file path and a short summary of the next step, then this line: `Saved. Type /clear, then /resume in the fresh session — or paste the block above.`
 5. **Stop.** Do not start new work. Do not ask follow-ups.
 
 ## Notes
 
 - Do NOT touch `.gitignore`. The user has explicitly opted to manage that themselves.
-- If the conversation has too little material to checkpoint meaningfully (e.g., user just opened the session), say so and ask if they still want a checkpoint before writing one.
+- If little has happened, write a short checkpoint with the known goal and next step. Do not add another confirmation to the requested save.
 - The checkpoint is per-repo. Don't try to merge state across multiple working directories.
+
+- Record any pending authorization accurately. A checkpoint is context, not new permission. Keep secrets and credentials out of it.

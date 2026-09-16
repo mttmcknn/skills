@@ -1,75 +1,43 @@
 # AI Skills
 
-The `himattm` Claude Code plugin marketplace — Matt McKenna's personal skill bundles.
+The `mttmcknn` plugin marketplace — Matt McKenna's personal agent skills for PR review and focused utilities.
 
-## Structure
-
-```
-.
-├── .claude-plugin/
-│   └── marketplace.json   # marketplace manifest (name: "himattm")
-├── android/               # Android/Compose development
-│   ├── .claude-plugin/plugin.json
-│   └── skills/
-├── review/                # Pull request review workflows
-│   ├── .claude-plugin/plugin.json
-│   └── skills/
-├── utilities/             # Utility skills + slash commands
-│   ├── .claude-plugin/plugin.json
-│   ├── commands/          # slash commands (/checkpoint, /resume)
-│   └── skills/
-└── README.md
-```
-
-The Jekyll source for the published site (https://himattm.github.io/skills/) lives on the [`gh-pages-src`](https://github.com/himattm/skills/tree/gh-pages-src) branch. The built site lives on the orphan [`gh-pages`](https://github.com/himattm/skills/tree/gh-pages) branch.
+Browse the [skills website](https://mttmcknn.github.io/skills/). Its Jekyll source lives on [`gh-pages-src`](https://github.com/mttmcknn/skills/tree/gh-pages-src); GitHub Actions combines that source with the skills on `main` and publishes to `gh-pages`.
 
 ## Plugins
 
 | Plugin | Skills |
-|--------|--------|
-| `android@himattm` | `android-cli`, `new-android-app`, `verify-android-layout`, `verify-android-screen`, `android-probe-logging`, `android-reproduce-as-test`, `android-strictmode-probe`, `android-snapshot-diff`, `android-regression-diff-scan`, `android-crash-repro-loop`, `android-trace-sections`, `android-runtime-flag-probe`, `android-coroutine-trace`, `android-perfetto-capture`, `android-perfetto-analyze` |
-| `review@himattm` | `address-review`, `review-cycle`, `validate-merge-prs` |
-| `utilities@himattm` | `code-as-image`, `interrogation`, `/checkpoint` + `/resume` |
+| --- | --- |
+| `review@mttmcknn` | `address-review`, `review-cycle`, `validate-merge-prs` |
+| `utilities@mttmcknn` | `code-as-image`, `interrogation` |
 
-## Usage
+Utilities also includes `/checkpoint` and `/resume` commands for Claude Code.
 
-### Claude Code
+## Install
 
-**Install via the marketplace** (auto-updates at startup):
+In Claude Code:
 
-```
-/plugin marketplace add https://github.com/himattm/skills
-/plugin install android@himattm
-/plugin install review@himattm
-/plugin install utilities@himattm
+```text
+/plugin marketplace add https://github.com/mttmcknn/skills
+/plugin install review@mttmcknn
+/plugin install utilities@mttmcknn
 ```
 
-Claude Code refreshes the marketplace manifest at startup; new skills and version bumps in either plugin's `plugin.json` ship to every machine without manual `/plugin update` calls.
+For an existing installation under the former marketplace name, uninstall those old plugin entries and remove the old marketplace using `/plugin`, then add/install the names above. Avoid keeping both copies active. Automatic updates depend on the client's marketplace settings; check `/plugin` for update controls.
 
-**Local development shortcut** (edits show up immediately, no commit needed):
+For local skill development, link only the skills you need into the host's discovery directory. Codex discovers repository skills in `.agents/skills/`; Claude Code uses `.claude/skills/`. Avoid loading the same skill both through a plugin and a local symlink. Commands under `utilities/commands/` are Claude Code commands, not standalone Codex skills.
 
-```bash
-mkdir -p ~/.claude/skills
-for s in {android,review,utilities}/skills/*/; do
-  ln -sfn "$(realpath "$s")" "$HOME/.claude/skills/$(basename "$s")"
-done
-```
+## Android skills
 
-The symlinks and the plugin install can coexist on a development machine. On consumer machines, prefer the plugin install alone — it's the only path with auto-update.
+Android workflows now belong entirely to Google's [Android skills](https://github.com/android/skills), maintained through the upstream Android CLI/plugin. The local Android plugin and its 15 skills have been removed to avoid competing guidance for project creation, UI interaction, testing, debugging, and profiling.
 
-## Publishing changes
+For existing installs, uninstall this marketplace's Android plugin and remove local symlinks pointing to its former skill folders. Keep separately installed upstream Android skills. The review and utilities plugins remain available here.
 
-To push an update that auto-installs on every consumer machine at next Claude Code startup:
+## Maintenance
 
-1. Edit the relevant skill (or add a new one) under `<plugin>/skills/`.
-2. Bump the `version` field in that plugin's `.claude-plugin/plugin.json` (e.g. `0.1.0` → `0.1.1`). Use semver: patch for fixes, minor for new skills, major for breaking changes.
-3. Commit and push to `main`.
+- Skills live at `<plugin>/skills/<name>/SKILL.md`; plugin manifests live at `<plugin>/.claude-plugin/plugin.json`.
+- Keep each description specific enough to distinguish it from upstream skills and its neighbors. Keep the entrypoint short, and link conditional details from `references/`; templates belong in `assets/`.
+- Validate frontmatter, names, resource links, and marketplace paths with `python3 scripts/validate_skills.py` (requires PyYAML from `requirements-dev.txt`). Check representative routing cases in [the audit](maintenance/skill-audit.md) when changing scope.
+- Bump the affected plugin version and publish the reviewed changes. For new plugins, also add a relative-source entry to `.claude-plugin/marketplace.json`.
 
-Claude Code refreshes the marketplace manifest at startup; consumers see the version bump and pull the new content automatically. No `/plugin update` invocation needed.
-
-To add a brand-new plugin:
-
-1. Create `<new-plugin>/.claude-plugin/plugin.json` with `name`, `version: "0.1.0"`, and `description`.
-2. Add `<new-plugin>/skills/<skill-name>/SKILL.md` for each skill.
-3. Add an entry for the plugin in `.claude-plugin/marketplace.json` under `plugins[]` with `"source": "./<new-plugin>"`.
-4. Push. Existing consumers can install it with `/plugin install <new-plugin>@himattm`.
+The writing guidance follows [OpenAI's skill documentation](https://learn.chatgpt.com/docs/build-skills): precise discovery, progressive disclosure, and workflows scoped to the requested task.

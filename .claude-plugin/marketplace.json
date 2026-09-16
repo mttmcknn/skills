@@ -1,40 +1,30 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "himattm",
-  "description": "Matt Mckenna's personal Claude Code plugin marketplace.",
+  "name": "mttmcknn",
+  "description": "Matt McKenna's agent skills for PR review and focused utilities.",
   "owner": {
-    "name": "Matt Mckenna"
+    "name": "Matt McKenna"
   },
   "plugins": [
     {
-      "name": "android",
-      "description": "Android/Compose development skills: project scaffolding, the `android` CLI, and screenshot/UI verification.",
-      "author": {
-        "name": "Matt Mckenna"
-      },
-      "category": "development",
-      "source": "./android",
-      "homepage": "https://github.com/himattm/skills"
-    },
-    {
       "name": "review",
-      "description": "Pull request review workflows: addressing review comments (human or bot), iterative review cycles, and batch PR validation/merging.",
+      "description": "Pull request feedback, scoped review-and-fix cycles, and dependency-aware PR validation and merging.",
       "author": {
-        "name": "Matt Mckenna"
+        "name": "Matt McKenna"
       },
       "category": "development",
       "source": "./review",
-      "homepage": "https://github.com/himattm/skills"
+      "homepage": "https://github.com/mttmcknn/skills"
     },
     {
       "name": "utilities",
-      "description": "Utility skills (code-as-image, interrogation) plus session bookmark commands `/checkpoint` and `/resume` for stepping away mid-work and picking up cleanly in a fresh context.",
+      "description": "Code snippet images, focused clarification, and checkpoint/resume commands.",
       "author": {
-        "name": "Matt Mckenna"
+        "name": "Matt McKenna"
       },
       "category": "utilities",
       "source": "./utilities",
-      "homepage": "https://github.com/himattm/skills"
+      "homepage": "https://github.com/mttmcknn/skills"
     }
   ]
 }

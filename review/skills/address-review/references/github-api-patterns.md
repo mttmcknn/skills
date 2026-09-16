@@ -56,17 +56,17 @@ Common review-bot logins you may see:
 | `start_line` | Start line for multi-line comments (can be `null`) |
 | `side` | `RIGHT` (new code) or `LEFT` (old code) |
 | `diff_hunk` | Diff context — use for locating code when `line` is null |
-| `in_reply_to_id` | If set, this is a reply (skip when triaging) |
+| `in_reply_to_id` | If set, this is a reply (read as thread context; do not count as a new issue) |
 | `created_at` | Timestamp |
 
 ### Formal Reviews (secondary — summary comments)
 
 ```bash
 # All formal reviews
-gh api "repos/{owner}/{repo}/pulls/{pr}/reviews"
+gh api "repos/{owner}/{repo}/pulls/{pr}/reviews" --paginate
 
 # Filter by author as above
-gh api "repos/{owner}/{repo}/pulls/{pr}/reviews" \
+gh api "repos/{owner}/{repo}/pulls/{pr}/reviews" --paginate \
   --jq '[.[] | select(.user.login == "alice")]'
 ```
 
@@ -110,7 +110,7 @@ For multi-line suggestions: the suggestion replaces lines `start_line` through `
 # Reply in the existing thread (NOT a new top-level comment)
 gh api "repos/{owner}/{repo}/pulls/{pr}/comments/{comment_id}/replies" \
   --method POST \
-  -f body="Fixed in abc1234. Removed redundant sort call."
+  -F body=@reply.md
 ```
 
 Reply templates by verdict:
@@ -122,8 +122,10 @@ Reply templates by verdict:
 ## Edge Cases
 
 - **Null line numbers**: Use `diff_hunk` to locate the code context. Search for the last few lines of the hunk in the file.
-- **Stale comments**: If `path` no longer exists or `line` is beyond file length, the comment is on deleted/moved code. DISMISS with reason.
-- **Pagination**: Always use `--paginate` — PRs with many comments may span multiple pages.
-- **Rate limits**: `gh api` handles rate limiting automatically with backoff. For large batches of replies, add a 1-second delay between calls if you hit 403s.
+- **Stale comments**: Follow moved code and the original hunk before deciding whether the concern is resolved or still applies.
+- **Pagination**: Paginate comments, reviews, and conversation comments. REST comment lists do not include thread resolution; use a paginated GraphQL `reviewThreads` query or a connector for resolution state. Read replies as context and avoid duplicate responses.
+- **Rate limits**: Inspect response headers and respect `Retry-After`/rate-limit reset. Use bounded retries; distinguish permission failures from rate limits.
 - **Mixed authors on one PR**: When defaulting to all reviewers, the triage table should include the `Author` column so the user can see who raised each item.
 - **PR author self-comments**: The PR author may leave inline notes on their own PR. These are usually self-reminders or context, not requests for action — still surface them; default verdict often becomes DISMISS or DISCUSS.
+
+Write the exact authorized reply to `reply.md` before the example POST. Formal review IDs are not inline comment IDs and cannot use the inline replies endpoint. Read top-level discussion with `gh api "repos/{owner}/{repo}/issues/{pr}/comments" --paginate` when relevant.
