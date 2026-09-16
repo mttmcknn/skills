@@ -21,6 +21,4 @@ redirect_from:
   - /android/skills/verify-android-screen/
 ---
 
-Android workflows are now maintained through [Google’s Android skills](https://github.com/android/skills), available through the Android CLI/plugin. This marketplace’s Android bundle has been retired to avoid overlapping instructions.
-
-Uninstall the former local Android plugin and remove any symlinks pointing to it. Keep separately installed upstream Android skills. The [review and utilities collection]({{ "/" | relative_url }}) remains available here.
+Use [Google’s Android skills](https://github.com/android/skills) for Android workflows.
