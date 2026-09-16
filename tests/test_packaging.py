@@ -36,6 +36,38 @@ class PackagingTests(unittest.TestCase):
         self.assertEqual(count, 7)
         self.assertEqual(errors, [])
 
+    def test_claude_packages_expose_all_skills_without_codex_metadata(self):
+        native = json.loads((self.root / '.agents/plugins/marketplace.json').read_text())
+        expected = {}
+        for entry in native['plugins']:
+            source = self.root / entry['source']['path']
+            manifest = json.loads((source / '.codex-plugin/plugin.json').read_text())
+            expected[entry['name']] = (
+                manifest['version'],
+                {p.parent.name for p in (source / manifest['skills']).glob('*/SKILL.md')},
+            )
+            shutil.rmtree(source / '.codex-plugin')
+            for metadata in (source / 'skills').glob('*/agents'):
+                shutil.rmtree(metadata)
+        shutil.rmtree(self.root / '.agents')
+
+        catalog = json.loads((self.root / '.claude-plugin/marketplace.json').read_text())
+        self.assertEqual(catalog['name'], native['name'])
+        actual = {}
+        for entry in catalog['plugins']:
+            source = (self.root / entry['source']).resolve()
+            self.assertTrue(source.is_relative_to(self.root.resolve()))
+            manifest = json.loads((source / '.claude-plugin/plugin.json').read_text())
+            self.assertEqual(manifest['name'], entry['name'])
+            self.assertNotIn(entry['name'], actual)
+            # Claude discovers skills/ without any Codex metadata or commands/.
+            actual[entry['name']] = (
+                manifest['version'],
+                {p.parent.name for p in (source / 'skills').glob('*/SKILL.md')},
+            )
+        self.assertEqual(actual, expected)
+        self.assertEqual(sum(len(skills) for _, skills in actual.values()), 7)
+
     def test_missing_reference_fails(self):
         path = self.root / 'plugins/review/skills/address-review/references/github-api-patterns.md'
         path.unlink()

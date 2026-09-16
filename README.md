@@ -1,6 +1,6 @@
 # Agent Skills
 
-Portable agent skills for PR review and focused utilities, with Codex as the primary integration. Each workflow lives in a standard `SKILL.md`; host-specific metadata stays outside the instructions.
+Portable agent skills for PR review and focused utilities, packaged for both Codex and Claude Code. Both hosts get the same seven skills. Each workflow lives in a standard `SKILL.md`; host-specific metadata stays outside the instructions.
 
 Browse the [skills website](https://mttmcknn.github.io/skills/).
 
@@ -24,6 +24,20 @@ Use $resume to continue from the latest checkpoint in this project.
 
 The plugins contain instructions and resources. PR workflows use an available GitHub connector or the authenticated `gh` CLI; installing the skills does not configure credentials or grant repository access.
 
+## Install in Claude Code
+
+Add the same repository as a Claude Code marketplace, then choose either or both bundles:
+
+```text
+/plugin marketplace add https://github.com/mttmcknn/skills
+/plugin install review@mttmcknn
+/plugin install utilities@mttmcknn
+```
+
+Use Claude Code's skill picker to invoke any of the seven skills, including checkpoint/resume. Both bundles have their own `.claude-plugin/plugin.json` alongside the Codex manifest. Claude discovers the shared `skills/` folders directly; it does not require Codex to be installed. See [Claude Code's plugin structure](https://code.claude.com/docs/en/plugins-reference#skills).
+
+The Claude manifests are generated to keep bundle names, versions, and descriptions in sync. They are committed and shipped with every release. Automatic updates depend on the client's marketplace settings.
+
 ## Bundles
 
 | Bundle | Skills |
@@ -37,16 +51,6 @@ Checkpoint/resume use project-local `.agents/checkpoints/` by default and accept
 
 For any host that supports the [Agent Skills format](https://agentskills.io/specification), install or link individual folders from `plugins/<bundle>/skills/` into its skill discovery directory. Copy the whole skill folder so relative references remain available. For Codex local development, `.agents/skills/` is the repository discovery directory. Avoid loading both a plugin and a linked copy of the same skill.
 
-Claude Code compatibility metadata is generated from the native catalog and points to the same skill files:
-
-```text
-/plugin marketplace add https://github.com/mttmcknn/skills
-/plugin install review@mttmcknn
-/plugin install utilities@mttmcknn
-```
-
-There is no separate Claude-only implementation or command directory. Use the host's skill picker or invocation syntax for checkpoint/resume. Automatic updates depend on the client's marketplace settings.
-
 ## Repository layout
 
 ```text
@@ -57,8 +61,8 @@ plugins/<bundle>/
     SKILL.md                        # Portable workflow
     agents/openai.yaml              # Codex display metadata
     references/                     # Optional task-specific detail
-  .claude-plugin/plugin.json         # Generated compatibility metadata
-.claude-plugin/marketplace.json       # Generated compatibility catalog
+  .claude-plugin/plugin.json         # Claude Code metadata (generated)
+.claude-plugin/marketplace.json       # Claude Code catalog (generated)
 ```
 
 The [website source](https://github.com/mttmcknn/skills/tree/gh-pages-src) is maintained on `gh-pages-src`. GitHub Actions combines it with the native catalog and skills from `main`, then publishes to `gh-pages`. Public skill-page URLs stay stable when repository folders move.

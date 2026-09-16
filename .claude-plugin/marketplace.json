@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "mttmcknn",
-  "description": "Optional Claude Code packaging for the same portable agent skills.",
+  "description": "Portable agent skills for PR review and utilities, available in Claude Code and Codex.",
   "owner": {
     "name": "Matt McKenna"
   },

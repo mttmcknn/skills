@@ -68,3 +68,9 @@ Moved bundles to `plugins/`, added the native `.agents/plugins/marketplace.json`
 Converted checkpoint/resume commands into two standard skills, bringing the remaining collection to seven skills. Handoffs default to `.agents/checkpoints/`, accept explicit legacy paths, and require no host-specific file tool, clear-chat command, or conversation state. Installation documentation prioritizes Codex and includes individual skill-folder use in other compatible hosts.
 
 Packaging validation checks both native metadata and compatibility synchronization. Fixture tests exercise missing resources, duplicate names, bad metadata, escaped plugin paths, and synchronization behavior. These checks do not measure live model routing or claim every agent host was exercised.
+
+## Support for both hosts
+
+Codex and Claude Code both remain supported. Each bundle ships both manifests and one shared `skills/` directory; the old top-level Claude manifests moved with their bundles into `plugins/`. The README and website now give each host its own installation section. Generating Claude metadata keeps releases synchronized and does not make Codex a runtime dependency.
+
+A packaging regression test checks that the Claude catalog exposes all seven skills at matching versions after removing all Codex metadata from a fixture. Release checks also validate the marketplace and both bundles with `claude plugin validate --strict`. Claude's [plugin reference](https://code.claude.com/docs/en/plugins-reference#skills) documents discovery of the shared `skills/` layout.

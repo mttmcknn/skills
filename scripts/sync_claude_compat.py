@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate optional Claude packaging from the native Codex catalog/manifests."""
+"""Generate the shipped Claude Code packaging from shared bundle metadata."""
 import argparse
 import json
 from pathlib import Path
@@ -28,7 +28,7 @@ def outputs(root):
     files[root / '.claude-plugin/marketplace.json'] = {
         '$schema': 'https://anthropic.com/claude-code/marketplace.schema.json',
         'name': catalog['name'],
-        'description': 'Optional Claude Code packaging for the same portable agent skills.',
+        'description': 'Portable agent skills for PR review and utilities, available in Claude Code and Codex.',
         'owner': {'name': 'Matt McKenna'}, 'plugins': entries,
     }
     return files
