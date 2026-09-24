@@ -25,10 +25,12 @@ Include relevant media in the PR description, not comments. Prefer one final-sta
 
 Always organize every screenshot and image in a compact Markdown table, whether it shows a single final state, different screens, unrelated examples, an explanatory diagram, or a before/after comparison. This applies even when there is only one image and no comparison. Use short, descriptive headers appropriate to the content; do not require Before / After labels. Place images side by side when useful, and use additional rows instead of an overly wide table. Keep captions brief and avoid repeating the same image outside the table.
 
+Use HTML `<img>` tags inside table cells to control display size. For portrait phone screenshots, default to `width="280"` (280 CSS pixels), with descriptive `alt` text and no `height` attribute so proportions are preserved. A table alone does not constrain image height. Use an explicit width rather than a minimum width; choose a larger width for landscape screenshots or diagrams when needed for legibility. Keep the original uploaded resolution.
+
 ```markdown
 | Search screen | Settings screen |
 | --- | --- |
-| ![Search screen](./search.png) | ![Settings screen](./settings.png) |
+| <img src="SEARCH_IMAGE_URL" alt="Search screen" width="280"> | <img src="SETTINGS_IMAGE_URL" alt="Settings screen" width="280"> |
 ```
 
 For a single image:
@@ -36,7 +38,7 @@ For a single image:
 ```markdown
 | Final state |
 | --- |
-| ![Final state](./after.png) |
+| <img src="IMAGE_URL" alt="Final state" width="280"> |
 ```
 
 Inspect the media before uploading. Label previews, fixtures, and explanatory diagrams accurately; they do not prove live integration. Reuse current evidence and remove redundant attachments. If capture or upload is blocked, state the limitation and include the best available evidence.
@@ -49,8 +51,8 @@ Write the description to a body file. Use `gh pr create` or `gh pr edit` with `-
 gh pr edit PR_NUMBER --repo OWNER/REPO --body-file ./pr-body.md --attach './after.png#Final state'
 ```
 
-Reference the attached file path in a table cell, as in the single-image example above. gh replaces it with the uploaded URL. Repeat `--attach` for additional files; omit `#alt text` for videos. Preserve existing uploaded URLs when editing.
+Use the uploaded image URLs as `src` values in the final table, replacing the example placeholders above. If the upload tool rewrites only Markdown image references, upload using temporary Markdown references to the local files, then replace those references with sized `<img>` tags using the returned URLs. Do not assume local paths inside HTML tags will be uploaded or rewritten. Repeat `--attach` for additional files; omit `#alt text` for videos. Preserve existing uploaded URLs when editing and remove any duplicate previews appended by the upload tool.
 
 If the command fails, inspect the PR before retrying: attachment uploads can partially fail after the PR is created. Retry only missing attachments. If attachment support is unavailable, use an available upload tool or report the limitation; do not publish local file paths as working media links. Do not use `gh pr create --dry-run` for a local-only draft; it can push changes.
 
-Verify the published description and media render correctly. If rendering cannot be checked, say so. Return the PR link and any material validation limits.
+Verify the published description and media render correctly, including compact image widths and preserved proportions. If rendering cannot be checked, say so. Return the PR link and any material validation limits.
