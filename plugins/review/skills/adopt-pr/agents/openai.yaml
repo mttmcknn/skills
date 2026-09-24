@@ -1,0 +1,4 @@
+interface:
+  display_name: "Adopt a PR"
+  short_description: "Take over a PR and prepare it for review."
+  default_prompt: "Use $adopt-pr to take over this pull request and get it ready for review."
