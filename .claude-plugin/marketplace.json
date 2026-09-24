@@ -9,7 +9,7 @@
     {
       "name": "review",
       "source": "./plugins/review",
-      "description": "Review feedback, fix issues, and validate PR queues.",
+      "description": "Create pull requests, address feedback, and validate PR queues.",
       "author": {
         "name": "Matt McKenna",
         "url": "https://github.com/mttmcknn"
