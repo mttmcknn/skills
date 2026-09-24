@@ -1,6 +1,6 @@
 # Skills
 
-Agent skills for pull request reviews, code images, and task handoffs. Works with Codex, Claude Code, and other compatible agents.
+Agent skills for pull request creation and review, code images, and task handoffs. Works with Codex, Claude Code, and other compatible agents.
 
 ## Install
 
@@ -14,6 +14,7 @@ Choose your skills and agents. Add `--global` to install across projects.
 
 | Skill | Description |
 | --- | --- |
+| [make-pr](plugins/review/skills/make-pr/SKILL.md) | Create concise pull requests with images in compact tables. |
 | [address-review](plugins/review/skills/address-review/SKILL.md) | Address pull request review comments. |
 | [review-cycle](plugins/review/skills/review-cycle/SKILL.md) | Review and fix a pull request. |
 | [validate-merge-prs](plugins/review/skills/validate-merge-prs/SKILL.md) | Validate a PR queue and merge order. |

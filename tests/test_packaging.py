@@ -33,7 +33,7 @@ class PackagingTests(unittest.TestCase):
         for path in (self.root / 'plugins').glob('*/.claude-plugin'):
             shutil.rmtree(path)
         count, errors = validator.validate(self.root)
-        self.assertEqual(count, 7)
+        self.assertEqual(count, 8)
         self.assertEqual(errors, [])
 
     def test_claude_packages_expose_all_skills_without_codex_metadata(self):
@@ -66,7 +66,7 @@ class PackagingTests(unittest.TestCase):
                 {p.parent.name for p in (source / 'skills').glob('*/SKILL.md')},
             )
         self.assertEqual(actual, expected)
-        self.assertEqual(sum(len(skills) for _, skills in actual.values()), 7)
+        self.assertEqual(sum(len(skills) for _, skills in actual.values()), 8)
 
     def test_missing_reference_fails(self):
         path = self.root / 'plugins/review/skills/address-review/references/github-api-patterns.md'
