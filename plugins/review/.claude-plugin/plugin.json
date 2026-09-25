@@ -1,7 +1,7 @@
 {
   "name": "review",
-  "version": "0.4.0",
-  "description": "Review feedback, fix issues, and validate PR queues.",
+  "version": "0.5.0",
+  "description": "Adopt PRs, address feedback, and validate PR queues.",
   "author": {
     "name": "Matt McKenna",
     "url": "https://github.com/mttmcknn"
