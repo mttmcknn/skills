@@ -1,6 +1,6 @@
 ---
 name: adopt-pr
-description: Take over an existing pull request, recover its context, fix confirmed issues, validate the result, and refresh its description and evidence for review. Use when asked to adopt a PR or PR stack.
+description: Take over an existing pull request, recover its context, fix confirmed issues, validate the result, and refresh its description and evidence for review. Use when asked to adopt one PR; use adopt-stack for a whole stack.
 ---
 
 # Adopt a PR
@@ -11,7 +11,7 @@ Take the supplied PR URL from handoff to ready for review. Follow the repository
 
 A request to adopt a PR authorizes scoped fixes, local validation, commits, pushes to its branch, and description/media updates. Honor narrower instructions such as review-only, local-only, or no-push. Merely selecting this skill for a narrower request does not expand that request's authorization.
 
-A single PR URL targets that PR. Discover its stack for context without adopting every related PR. For an explicitly requested stack, process PRs in dependency order against their actual parents. Ask one focused question when a dependency requires changes outside the agreed scope; continue independent work while waiting.
+A single PR URL targets that PR. Discover its stack for context without adopting every related PR. For a whole stack, use `adopt-stack` when available. Ask one focused question when a dependency requires changes outside the agreed scope; continue independent work while waiting.
 
 Merging, splitting or closing PRs, changing draft status, and ongoing monitoring require an explicit request. Never post review comments, replies, or resolve review threads on the user's behalf unless explicitly asked. Reading feedback and fixing code do not authorize those actions.
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Adopt a Stack"
+  short_description: "Take over every PR in a stack."
+  default_prompt: "Use $adopt-stack to take over this PR stack and get every PR ready for review."

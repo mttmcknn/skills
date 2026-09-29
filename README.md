@@ -15,6 +15,7 @@ Choose your skills and agents. Add `--global` to install across projects.
 | Skill | Description |
 | --- | --- |
 | [adopt-pr](plugins/review/skills/adopt-pr/SKILL.md) | Take over a PR, validate it, and prepare it for review. |
+| [adopt-stack](plugins/review/skills/adopt-stack/SKILL.md) | Take over every PR in a stack. |
 | [address-review](plugins/review/skills/address-review/SKILL.md) | Address pull request review comments. |
 | [review-cycle](plugins/review/skills/review-cycle/SKILL.md) | Review and fix a pull request. |
 | [validate-merge-prs](plugins/review/skills/validate-merge-prs/SKILL.md) | Validate a PR queue and merge order. |
