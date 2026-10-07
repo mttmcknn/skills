@@ -1,7 +1,7 @@
 {
   "name": "review",
   "version": "2026-10-07",
-  "description": "Review feedback, fix issues, and validate PR queues.",
+  "description": "Adopt PRs and stacks, address feedback, and validate PR queues.",
   "author": {
     "name": "Matt McKenna",
     "url": "https://github.com/mttmcknn"
