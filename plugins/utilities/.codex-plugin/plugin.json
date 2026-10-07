@@ -1,7 +1,7 @@
 {
   "name": "utilities",
   "version": "0.6.0",
-  "description": "Code images, focused questions, and portable handoffs.",
+  "description": "Code images, focused questions, portable handoffs, and skill reflection.",
   "author": {
     "name": "Matt McKenna",
     "url": "https://github.com/mttmcknn"
@@ -9,15 +9,16 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Agent Utilities",
-    "shortDescription": "Code images, focused questions, and portable handoffs.",
-    "longDescription": "Portable skills for code snippet images, focused clarification, and saving or resuming project handoffs.",
+    "shortDescription": "Code images, focused questions, portable handoffs, and skill reflection.",
+    "longDescription": "Portable skills for code snippet images, focused clarification, project handoffs, and evidence-based skill improvement.",
     "developerName": "Matt McKenna",
     "category": "Productivity",
     "capabilities": [],
     "defaultPrompt": [
       "Render this code snippet as an image.",
       "Save a checkpoint for this task.",
-      "Resume from this checkpoint."
+      "Resume from this checkpoint.",
+      "Review last week and improve our owned skills."
     ],
     "websiteURL": "https://mttmcknn.github.io/skills/"
   },

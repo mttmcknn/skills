@@ -1,6 +1,6 @@
 # Agent Skills
 
-Portable agent skills for PR review and focused utilities, packaged for both Codex and Claude Code. Both hosts get the same seven skills. Each workflow lives in a standard `SKILL.md`; host-specific metadata stays outside the instructions.
+Portable agent skills for PR review and focused utilities, packaged for both Codex and Claude Code. Both hosts get the same eight skills. Each workflow lives in a standard `SKILL.md`; host-specific metadata stays outside the instructions.
 
 Browse the [skills website](https://mttmcknn.github.io/skills/).
 
@@ -34,7 +34,7 @@ Add the same repository as a Claude Code marketplace, then choose either or both
 /plugin install utilities@mttmcknn
 ```
 
-Use Claude Code's skill picker to invoke any of the seven skills, including checkpoint/resume. Both bundles have their own `.claude-plugin/plugin.json` alongside the Codex manifest. Claude discovers the shared `skills/` folders directly; it does not require Codex to be installed. See [Claude Code's plugin structure](https://code.claude.com/docs/en/plugins-reference#skills).
+Use Claude Code's skill picker to invoke any of the eight skills, including checkpoint/resume. Both bundles have their own `.claude-plugin/plugin.json` alongside the Codex manifest. Claude discovers the shared `skills/` folders directly; it does not require Codex to be installed. See [Claude Code's plugin structure](https://code.claude.com/docs/en/plugins-reference#skills).
 
 The Claude manifests are generated to keep bundle names, versions, and descriptions in sync. They are committed and shipped with every release. Automatic updates depend on the client's marketplace settings.
 
@@ -43,7 +43,7 @@ The Claude manifests are generated to keep bundle names, versions, and descripti
 | Bundle | Skills |
 | --- | --- |
 | `review` | `address-review`, `review-cycle`, `validate-merge-prs` |
-| `utilities` | `code-as-image`, `interrogation`, `checkpoint`, `resume` |
+| `utilities` | `code-as-image`, `interrogation`, `checkpoint`, `resume`, `reflect` |
 
 Checkpoint/resume use project-local `.agents/checkpoints/` by default and accept an explicitly supplied path. They work across agent hosts and do not depend on a clear-chat command or the original conversation.
 

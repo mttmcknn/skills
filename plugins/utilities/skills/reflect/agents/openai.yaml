@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reflect"
+  short_description: "Improve skills using weekly chats and PR outcomes"
+  default_prompt: "Use $reflect to review last week's configured AI chats and development outcomes, assess skill effectiveness, and propose portable improvements to owned skills or companions for external skills."

@@ -19,7 +19,7 @@
     {
       "name": "utilities",
       "source": "./plugins/utilities",
-      "description": "Code images, focused questions, and portable handoffs.",
+      "description": "Code images, focused questions, portable handoffs, and skill reflection.",
       "author": {
         "name": "Matt McKenna",
         "url": "https://github.com/mttmcknn"
