@@ -1,0 +1,143 @@
+
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://skills.mttmcknn.dev/</id>
+  <title>Matt's Skills</title>
+  <subtitle>Skills for PR review, code images, and project handoffs. Install in Codex, Claude Code, and other agents with the skills CLI.</subtitle>
+  <updated>2026-10-07T15:40:44-07:00</updated>
+  <author>
+    <name>Matt McKenna</name>
+    <uri>https://skills.mttmcknn.dev/</uri>
+  </author>
+  <link rel="self" type="application/atom+xml" href="https://skills.mttmcknn.dev/feed.xml"/>
+  <link rel="alternate" type="text/html" hreflang="en"
+    href="https://skills.mttmcknn.dev/"/>
+  <generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator>
+  <rights> © 2026 Matt McKenna </rights>
+  <icon>/assets/img/favicons/favicon.ico</icon>
+  <logo>/assets/img/favicons/favicon-96x96.png</logo>
+
+
+  
+  <entry>
+    <title>Reflect</title>
+    <link href="https://skills.mttmcknn.dev/utilities/skills/reflect/" rel="alternate" type="text/html" title="Reflect" />
+    <published>2026-10-07T00:00:00-07:00</published>
+  
+    <updated>2026-10-07T00:00:00-07:00</updated>
+  
+    <id>https://skills.mttmcknn.dev/utilities/skills/reflect/</id>
+    <content type="text/html" src="https://skills.mttmcknn.dev/utilities/skills/reflect/" />
+    <author>
+      <name>Matt McKenna</name>
+    </author>
+
+  
+    
+    <category term="utilities" />
+    
+  
+
+  <summary>Review the previous week's AI chats and development outcomes, including delegated sessions, PR reviews, automated findings, and CI, for corrections, gaps, and evidence of skill effectiveness. Turn evidence into a reviewable queue of focused skill improvements or new skills, and follow up on earlier changes. Use for weekly process reflection, AI workflow retrospectives, or evaluating how well skills worked in practice.</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>Adopt a stack</title>
+    <link href="https://skills.mttmcknn.dev/review/skills/adopt-stack/" rel="alternate" type="text/html" title="Adopt a stack" />
+    <published>2026-09-29T00:00:00-07:00</published>
+  
+    <updated>2026-09-29T00:00:00-07:00</updated>
+  
+    <id>https://skills.mttmcknn.dev/review/skills/adopt-stack/</id>
+    <content type="text/html" src="https://skills.mttmcknn.dev/review/skills/adopt-stack/" />
+    <author>
+      <name>Matt McKenna</name>
+    </author>
+
+  
+    
+    <category term="review" />
+    
+  
+
+  <summary>Adopt every open pull request in a stack from any supplied PR URL by resolving dependencies, applying the adopt-pr workflow bottom to top, and preserving stack relationships. Use when asked to adopt, finish, or prepare a whole PR stack.</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>Make a PR</title>
+    <link href="https://skills.mttmcknn.dev/review/skills/make-pr/" rel="alternate" type="text/html" title="Make a PR" />
+    <published>2026-09-24T00:00:00-07:00</published>
+  
+    <updated>2026-09-24T00:00:00-07:00</updated>
+  
+    <id>https://skills.mttmcknn.dev/review/skills/make-pr/</id>
+    <content type="text/html" src="https://skills.mttmcknn.dev/review/skills/make-pr/" />
+    <author>
+      <name>Matt McKenna</name>
+    </author>
+
+  
+    
+    <category term="review" />
+    
+  
+
+  <summary>Create or update a pull request following the current repository's conventions. Use when asked to make or open a PR, prepare a PR draft, or improve its description.</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>Adopt a PR</title>
+    <link href="https://skills.mttmcknn.dev/review/skills/adopt-pr/" rel="alternate" type="text/html" title="Adopt a PR" />
+    <published>2026-09-24T00:00:00-07:00</published>
+  
+    <updated>2026-09-24T00:00:00-07:00</updated>
+  
+    <id>https://skills.mttmcknn.dev/review/skills/adopt-pr/</id>
+    <content type="text/html" src="https://skills.mttmcknn.dev/review/skills/adopt-pr/" />
+    <author>
+      <name>Matt McKenna</name>
+    </author>
+
+  
+    
+    <category term="review" />
+    
+  
+
+  <summary>Take over an existing pull request, recover its context, fix confirmed issues, validate the result, and refresh its description and evidence for review. Use when asked to adopt one PR; use adopt-stack for a whole stack.</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>Resume a Task Checkpoint</title>
+    <link href="https://skills.mttmcknn.dev/utilities/skills/resume/" rel="alternate" type="text/html" title="Resume a Task Checkpoint" />
+    <published>2026-09-16T00:00:00-07:00</published>
+  
+    <updated>2026-09-16T00:00:00-07:00</updated>
+  
+    <id>https://skills.mttmcknn.dev/utilities/skills/resume/</id>
+    <content type="text/html" src="https://skills.mttmcknn.dev/utilities/skills/resume/" />
+    <author>
+      <name>Matt McKenna</name>
+    </author>
+
+  
+    
+    <category term="utilities" />
+    
+  
+
+  <summary>Continue work from a saved project checkpoint or handoff when the user requests it. Verifies current files and Git state before following the recorded next step; does not require the original agent host or session.</summary>
+
+  </entry>
+
+</feed>
+
+
