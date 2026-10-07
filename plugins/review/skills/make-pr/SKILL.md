@@ -19,13 +19,13 @@ Lead with the problem and resulting behavior. Explain only the mechanism needed 
 
 Default to one short summary paragraph, no more than three grouped validation bullets, and the current media required below. Keep most descriptions under 200 prose words; use fewer when the change is simple. Exclude required metadata and media from that count. Do not pad to reach a length target. Include a consequential tradeoff or limitation when a sound review needs it, even when that exceeds the target; do not omit key information solely to meet a word count. Keep each detail in one place: use the summary for behavior and necessary mechanism, validation bullets for grouped checks, and media captions for the displayed state and tested build. Avoid repeating details across them or listing individual assertions. Reread the completed description for rapid skimability and remove redundant or incidental detail.
 
-Add a concise call tree, code-shape diff, or diagram when it helps explain the change.
+Add a concise call tree, code-shape diff, or diagram when it helps explain the change. When creating a diagram, use the `diagram-design` skill.
 
 ## 4. Include useful evidence
 
-Keep PR media reflective of the current PR code. Default to one final-state artifact in the description, not comments: a screenshot for static changes, a short video for interaction, motion, or streaming, or a diagram for non-UI work. Use additional captures only when needed to show distinct required states; every capture must represent the same final implementation. Do not accumulate before/after comparisons, intermediate iterations, or superseded reference images.
+Keep PR media reflective of the current PR code. Default to one final-state artifact in the description, not comments: a screenshot for static changes, a short video for interaction, motion, or streaming, or a diagram for non-UI work. Use additional captures when the user requests a comparison or when distinct required states need evidence. For a requested before/after comparison, label the baseline revision separately and capture the after state on the final implementation. Otherwise keep media focused on the final state. Remove intermediate iterations and superseded reference images.
 
-Capture after the final relevant code change, identify the tested commit or build in the caption, and verify the evidence against the current PR head before publishing. When later edits affect the appearance or behavior shown, replace the media and its caption. Labeling an outdated capture with an older commit does not make it valid final-state evidence.
+Capture final-state evidence after the final relevant code change, identify the tested commit or build in each caption, and verify final-state evidence against the current PR head before publishing. When later edits affect the appearance or behavior shown, replace the media and its caption. Labeling an outdated capture with an older commit does not make it valid final-state evidence.
 
 Always organize every screenshot and image in a compact Markdown table, whether it shows a single final state, distinct required screens, or an explanatory diagram. This applies even when there is only one image and no comparison. Use short, descriptive headers appropriate to the content; describe the final states shown. Place multiple required images side by side when useful, and use additional rows instead of an overly wide table. Keep captions brief and avoid repeating the same image outside the table.
 
@@ -45,7 +45,7 @@ For a single image:
 | <img src="IMAGE_URL" alt="Final state" width="280"> |
 ```
 
-Inspect the media before uploading. Label previews, fixtures, and explanatory diagrams accurately; they do not prove live integration. Reuse evidence only after verifying that it still represents the current PR head. Remove obsolete embeds, links, captions, and duplicate attachments from the description when replacing evidence. If current capture or upload is blocked, remove misleading stale media and report the missing evidence; do not substitute an outdated capture.
+Inspect the media before uploading. Label previews, fixtures, and explanatory diagrams accurately; they do not prove live integration. Reuse final-state evidence only after verifying that it still represents the current PR head; keep an explicitly requested baseline clearly labeled as comparison evidence. Remove obsolete embeds, links, captions, and duplicate attachments from the description when replacing evidence. If current capture or upload is blocked, remove misleading stale media and report the missing evidence; do not substitute an outdated capture.
 
 ## 5. Publish and verify
 
@@ -55,8 +55,8 @@ Write the description to a body file. Use `gh pr create` or `gh pr edit` with `-
 gh pr edit PR_NUMBER --repo OWNER/REPO --body-file ./pr-body.md --attach './after.png#Final state'
 ```
 
-Use the uploaded image URLs as `src` values in the final table, replacing the example placeholders above. If the upload tool rewrites only Markdown image references, upload using temporary Markdown references to the local files, then replace those references with sized `<img>` tags using the returned URLs. Do not assume local paths inside HTML tags will be uploaded or rewritten. Repeat `--attach` for additional files; omit `#alt text` for videos. Preserve an existing uploaded URL only for evidence verified as current. Replace the media section as a whole when refreshing it, and remove any duplicate previews appended by the upload tool.
+Use the uploaded image URLs as `src` values in the final table, replacing the example placeholders above. If the upload tool rewrites only Markdown image references, upload using temporary Markdown references to the local files, then replace those references with sized `<img>` tags using the returned URLs. Do not assume local paths inside HTML tags will be uploaded or rewritten. Repeat `--attach` for additional files; omit `#alt text` for videos. Preserve an existing uploaded URL only for verified current evidence or an explicitly requested, labeled baseline. Replace the media section as a whole when refreshing it, and remove any duplicate previews appended by the upload tool.
 
 If the command fails, inspect the PR before retrying: attachment uploads can partially fail after the PR is created. Retry only missing attachments. If attachment support is unavailable, use an available upload tool or report the limitation; do not publish local file paths as working media links. Do not use `gh pr create --dry-run` for a local-only draft; it can push changes.
 
-Verify that the published description contains only the intended final-state media, that every capture reflects the current PR code, and that the media render correctly with compact image widths and preserved proportions. If rendering cannot be checked, say so. Return the PR link and any material validation limits.
+Verify that the published description contains the intended final-state media and any explicitly requested, labeled baseline; that final-state captures reflect the current PR code; and that media render correctly with compact image widths and preserved proportions. If rendering cannot be checked, say so. Return the PR link and any material validation limits.
