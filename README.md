@@ -75,6 +75,16 @@ The former checkpoint/resume commands are now portable skills. Existing handoffs
 
 The Android plugin and its 15 skills have been removed. Use Google's [Android skills](https://github.com/android/skills) through the upstream CLI/plugin. Uninstall this marketplace's old Android plugin and remove its local symlinks while keeping separately installed upstream skills.
 
+## Versions
+
+Versions use the update day's date in `YYYY-MM-DD` format (America/New_York),
+for example `"2026-10-07"`. Each skill declares this quoted string in `SKILL.md`
+under `metadata.version` and shares its bundle's version.
+
+When updating a bundle, set its manifest and all its skill versions to that day's
+date, then run `python3 scripts/sync_claude_compat.py`. Multiple updates on the same
+day keep the same date; Git commits distinguish them.
+
 ## Authoring and validation
 
 1. Add or edit `plugins/<bundle>/skills/<name>/SKILL.md`. Keep the trigger narrow, instructions host-neutral, and optional detail in linked references.

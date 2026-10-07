@@ -1,5 +1,7 @@
 ---
 name: checkpoint
+metadata:
+  version: "2026-10-07"
 description: Save a compact project handoff when the user asks to pause, checkpoint, or preserve task context for a later session. Records the goal, decisions, changes, validation, blockers, and next step without requiring a particular agent host.
 ---
 

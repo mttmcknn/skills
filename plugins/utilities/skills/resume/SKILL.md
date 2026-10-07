@@ -1,5 +1,7 @@
 ---
 name: resume
+metadata:
+  version: "2026-10-07"
 description: Continue work from a saved project checkpoint or handoff when the user requests it. Verifies current files and Git state before following the recorded next step; does not require the original agent host or session.
 ---
 

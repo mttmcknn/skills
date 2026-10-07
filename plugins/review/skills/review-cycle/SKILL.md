@@ -1,5 +1,7 @@
 ---
 name: review-cycle
+metadata:
+  version: "2026-10-07"
 description: "Review and fix a pull request iteratively when the user requests a review-and-fix cycle. Recheck changed behavior and stop when no actionable issues remain; a review-only request must stay read-only."
 ---
 

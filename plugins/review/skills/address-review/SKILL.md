@@ -1,5 +1,7 @@
 ---
 name: address-review
+metadata:
+  version: "2026-10-07"
 description: "Address existing pull request review comments from humans or bots: validate feedback, implement justified fixes, and report dispositions. Use for received feedback, not a fresh code review or merge operation."
 ---
 

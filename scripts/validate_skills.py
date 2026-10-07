@@ -3,6 +3,7 @@
 import json
 import re
 import sys
+from datetime import date
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
@@ -42,8 +43,12 @@ def validate(root):
         data = json.loads(manifest.read_text())
         if data.get('name') != name:
             errors.append(f'{name}: plugin manifest name mismatch')
-        if not re.fullmatch(r'\d+\.\d+\.\d+', data.get('version', '')):
-            errors.append(f'{name}: missing/invalid version')
+        version = data.get('version')
+        try:
+            if not isinstance(version, str) or date.fromisoformat(version).isoformat() != version:
+                raise ValueError
+        except ValueError:
+            errors.append(f'{name}: version must be a real YYYY-MM-DD date string')
         if data.get('skills') != './skills/':
             errors.append(f'{name}: expected skills path ./skills/')
         interface = data.get('interface', {})
@@ -77,6 +82,9 @@ def validate(root):
             if skill_name in names:
                 errors.append(f'{skill}: duplicate skill name ({names[skill_name]})')
             names[skill_name] = skill
+            metadata = meta.get('metadata', {})
+            if not isinstance(metadata, dict) or metadata.get('version') != data.get('version'):
+                errors.append(f'{skill}: metadata.version must match bundle version {data.get("version")!r}')
             description = meta.get('description')
             if not isinstance(description, str) or not description.strip() or len(description) > 1024:
                 errors.append(f'{skill}: missing/invalid description')

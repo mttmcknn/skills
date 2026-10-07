@@ -1,5 +1,7 @@
 ---
 name: interrogation
+metadata:
+  version: "2026-10-07"
 description: "Clarify an underspecified request through a short, focused interview when the user asks to be questioned or invokes interrogation. Do not activate merely because an ordinary task has minor ambiguity."
 ---
 

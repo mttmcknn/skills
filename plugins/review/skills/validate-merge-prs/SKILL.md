@@ -1,5 +1,7 @@
 ---
 name: validate-merge-prs
+metadata:
+  version: "2026-10-07"
 description: "Validate a requested set of pull requests and determine dependency-aware merge order; execute merges only within the user-authorized scope. Use for a PR queue or stacked PRs, not a single code review."
 ---
 

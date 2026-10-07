@@ -97,18 +97,53 @@ class PackagingTests(unittest.TestCase):
         path.write_text(path.read_text().replace('$checkpoint', '$nonexistent-skill'))
         self.assertTrue(any('default prompt must invoke' in e for e in validator.validate(self.root)[1]))
 
+    def test_missing_invalid_or_stale_skill_version_fails(self):
+        path = self.root / 'plugins/review/skills/address-review/SKILL.md'
+        original = path.read_text()
+        _, frontmatter, body = original.split('---', 2)
+        for metadata in (None, 'invalid', {'version': 'invalid'}, {'version': '2026-10-06'}):
+            with self.subTest(metadata=metadata):
+                fields = validator.yaml.safe_load(frontmatter)
+                if metadata is None:
+                    fields.pop('metadata')
+                else:
+                    fields['metadata'] = metadata
+                path.write_text('---\n' + validator.yaml.safe_dump(fields) + '---' + body)
+                self.assertTrue(any('metadata.version must match bundle version' in error
+                                    for error in validator.validate(self.root)[1]))
+
+    def test_invalid_bundle_date_version_fails(self):
+        path = self.root / 'plugins/review/.codex-plugin/plugin.json'
+        data = json.loads(path.read_text())
+        for version in (None, 20261007, '0.6.0', '2026-2-3', '2026-02-30', '2027-02-29'):
+            with self.subTest(version=version):
+                data['version'] = version
+                path.write_text(json.dumps(data))
+                self.assertTrue(any('version must be a real YYYY-MM-DD date string' in error
+                                    for error in validator.validate(self.root)[1]))
+
+    def test_leap_day_version_is_valid(self):
+        path = self.root / 'plugins/review/.codex-plugin/plugin.json'
+        data = json.loads(path.read_text())
+        previous = data['version']
+        data['version'] = '2028-02-29'
+        path.write_text(json.dumps(data))
+        for skill in (self.root / 'plugins/review/skills').glob('*/SKILL.md'):
+            skill.write_text(skill.read_text().replace(f'version: "{previous}"', 'version: "2028-02-29"'))
+        self.assertEqual(validator.validate(self.root)[1], [])
+
     def test_compatibility_generation_tracks_native_release(self):
         self.assertEqual(compat.sync(self.root, check=True), [])
         path = self.root / 'plugins/review/.codex-plugin/plugin.json'
         data = json.loads(path.read_text())
-        data['version'] = '0.4.1'
+        data['version'] = '2026-10-08'
         path.write_text(json.dumps(data))
         destination = self.root / 'plugins/review/.claude-plugin/plugin.json'
         previous = destination.read_text()
         self.assertTrue(compat.sync(self.root, check=True))
         self.assertEqual(destination.read_text(), previous, 'Check mode must not mutate files')
         compat.sync(self.root)
-        self.assertEqual(json.loads(destination.read_text())['version'], '0.4.1')
+        self.assertEqual(json.loads(destination.read_text())['version'], '2026-10-08')
         self.assertEqual(compat.sync(self.root, check=True), [])
         self.assertEqual(compat.sync(self.root), [], 'Repeated generation must be idempotent')
 

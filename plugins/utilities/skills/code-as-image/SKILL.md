@@ -1,5 +1,7 @@
 ---
 name: code-as-image
+metadata:
+  version: "2026-10-07"
 description: "Render a supplied code snippet as a syntax-highlighted image for sharing or presentation. Produce an actual image when requested; return a renderer link alone only when that is the requested output or rendering is unavailable."
 ---
 

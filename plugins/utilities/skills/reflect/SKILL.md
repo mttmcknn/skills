@@ -1,5 +1,7 @@
 ---
 name: reflect
+metadata:
+  version: "2026-10-07"
 description: Review the previous week's AI chats and development outcomes, including delegated sessions, PR reviews, automated findings, and CI, for corrections, gaps, and evidence of skill effectiveness. Turn evidence into a reviewable queue of focused skill improvements or new skills, and follow up on earlier changes. Use for weekly process reflection, AI workflow retrospectives, or evaluating how well skills worked in practice.
 ---
 
