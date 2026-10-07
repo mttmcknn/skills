@@ -26,7 +26,7 @@ Choose your skills and agents. Add `--global` to install across projects.
 | [resume](plugins/utilities/skills/resume/SKILL.md) | Continue from a saved handoff. |
 | [reflect](plugins/utilities/skills/reflect/SKILL.md) | Review development outcomes and improve owned skills. |
 
-[Website](https://mttmcknn.github.io/skills/) · [CLI options](https://github.com/vercel-labs/skills)
+[Website](https://skills.mttmcknn.dev/) · [CLI options](https://github.com/vercel-labs/skills)
 
 ## Versions
 
