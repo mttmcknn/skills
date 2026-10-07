@@ -7,8 +7,8 @@ title: Matt's Skills
 tagline: Portable agent skills
 description: Skills for PR review, code images, and project handoffs. Install in Codex, Claude Code, and other agents with the skills CLI.
 
-url: "https://mttmcknn.github.io"
-baseurl: "/skills"
+url: "https://skills.mttmcknn.dev"
+baseurl: ""
 
 github:
   username: mttmcknn
