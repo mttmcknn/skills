@@ -1,7 +1,7 @@
 {
   "name": "review",
   "version": "2026-10-07",
-  "description": "Adopt PRs and stacks, address feedback, and validate PR queues.",
+  "description": "Create and adopt PRs and stacks, address feedback, and validate PR queues.",
   "author": {
     "name": "Matt McKenna",
     "url": "https://github.com/mttmcknn"
@@ -9,12 +9,13 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "PR Review",
-    "shortDescription": "Adopt PRs and stacks, address feedback, and validate PR queues.",
-    "longDescription": "Portable skills for pull request and stack adoption, feedback, review-and-fix cycles, and dependency-aware merge validation.",
+    "shortDescription": "Create and adopt PRs and stacks, address feedback, and validate PR queues.",
+    "longDescription": "Portable skills for pull request creation and adoption, stack adoption, feedback, review-and-fix cycles, and dependency-aware merge validation.",
     "developerName": "Matt McKenna",
     "category": "Productivity",
     "capabilities": [],
     "defaultPrompt": [
+      "Create a pull request for this change.",
       "Adopt this PR and get it ready for review.",
       "Adopt this PR stack and get every PR ready for review.",
       "Address the review comments on this PR.",

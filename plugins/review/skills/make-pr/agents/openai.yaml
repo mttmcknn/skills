@@ -1,0 +1,4 @@
+interface:
+  display_name: "Make a PR"
+  short_description: "Create concise pull requests with useful evidence."
+  default_prompt: "Use $make-pr to prepare a pull request for this change with concise context and relevant evidence."

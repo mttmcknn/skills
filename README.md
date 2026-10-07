@@ -14,6 +14,7 @@ Choose your skills and agents. Add `--global` to install across projects.
 
 | Skill | Description |
 | --- | --- |
+| [make-pr](plugins/review/skills/make-pr/SKILL.md) | Create or update a pull request with useful evidence. |
 | [adopt-pr](plugins/review/skills/adopt-pr/SKILL.md) | Take over a PR, validate it, and prepare it for review. |
 | [adopt-stack](plugins/review/skills/adopt-stack/SKILL.md) | Take over every PR in a stack. |
 | [address-review](plugins/review/skills/address-review/SKILL.md) | Address pull request review comments. |
